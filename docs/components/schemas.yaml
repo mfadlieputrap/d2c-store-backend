@@ -1,0 +1,607 @@
+components:
+  schemas:
+    User:
+      type: object
+      description: Basic user information used across the application.
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the user (MongoDB ObjectId).
+          example: 60c72b2f9e7f8e001cfd4c0a
+        username:
+          type: string
+          description: Display name of the user.
+          example: johndoe
+        email:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: johndoe@example.com
+        phone:
+          type: string
+          description: Contact phone number of the user.
+          example: "+628123456789"
+        role:
+          type: string
+          description: Role assigned to the user (e.g., buyer, seller, admin).
+          example: buyer
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the user was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of the last update to the user profile.
+      required:
+        - _id
+        - username
+        - email
+        - phone
+        - role
+
+    Product:
+      type: object
+      description: Product information used across the application
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the user (MongoDB ObjectId).
+          example: 60c72b2f9e7f8e001cfd4c0a
+        name:
+          type: string
+          description: Name of product
+          example: Modern black T-Shirt
+        slug:
+          type: string
+          description: URL-friendly version of the product name
+          example: black-tshirt-man
+        description:
+          type: string
+          description: Short description about the product
+          example: This T-shirt is homemade
+        detail:
+          type: string
+          description: Detailed product information
+          example: Made with 100% cotton
+        defaultPrice:
+          type: number
+          description: Default price if the product has no variants
+          example: 32000
+        defaultStock:
+          type: number
+          description: Default stock or total stock if the product has no variant
+          example: 56
+        category:
+          type: string
+          description: Unique identifier category reference from category for the product (MongoDB ObjectId)
+          example: 60c72b2f9e7f8e001cfa5y5u
+        variants:
+          type: array
+          description: List of product variants
+          items:
+            type: object
+            properties:
+              color:
+                type: string
+                example: black
+              size:
+                type: string
+                example: XL
+              stock:
+                type: number
+                example: 34
+              price:
+                type: number
+                format: float
+                example: 32000
+        images:
+          type: array
+          description: Array of image URLs
+          items:
+            type: string
+            format: uri
+            example: https://cdn.example.com/images/product-123.jpg
+        isAvailable:
+          type: boolean
+          description: Whether the product is available for purchase
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Product creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Product last updated timestamp
+      required:
+        - _id
+        - name
+        - slug
+        - description
+        - detail
+        - defaultPrice
+        - defaultStock
+        - category
+        - variants
+        - images
+        - isAvailable
+
+    Wishlist:
+      type: object
+      description: Wishlist product user
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the user (MongoDB ObjectId)
+          example: 60cj3k4hs7nk4hihjs8hks6
+        userId:
+          type: string
+          description: ObjectId reference to category
+          example: 60c89b4y23jl8uo9wi390kh
+        productId:
+          type: string
+          description: ObjectId reference to product
+          example: 60c8s9a7da8sd98sa7s88sa
+        createdAt:
+          type: string
+          format: date-time
+          description: Wishlist creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Wishlist last updated timestamp
+      required:
+        - _id
+        - userId
+        - productId
+
+    Cart:
+      type: object
+      description: Cart product user
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the cart (MongoDB ObjectId)
+          example: 60ci8ytg3h2k348kh4hj3ug3u
+        userId:
+          type: string
+          description: ObjectId reference to user
+          example: 60cj9iy7us8aey98scy8ads67
+        productId:
+          type: string
+          description: ObjectId reference to product
+          example: 60cji3hk43yg2k33yf4hj54tf
+        variant:
+          type: object
+          properties:
+            color:
+              type: string
+              example: black
+            size:
+              type: string
+              example: XXL
+        quantity:
+          type: number
+          description: Quantity of product in cart
+          example: 4
+        createdAt:
+          type: string
+          format: date-time
+          description: Cart creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Cart last updated timestamp
+
+    Category:
+      type: object
+      description: Category
+      properties:
+        _id:
+          type: string
+          description: Unique identified for the category
+          example: 60c5s6d78a76dc83da
+        name:
+          type: string
+          description: Name of category
+          example: Underware
+        slug:
+          type: string
+          description: URL-friendly version of the product name
+          example: black-underware
+        parent:
+          type: string
+          nullable: true
+          description: ObjectId of the parent category
+          example: 60ca5ds6cs78ad80c7a
+        createdAt:
+          type: string
+          format: date-time
+          description: Category creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Category last update timestamp
+      required:
+        - _id
+        - name
+        - slug
+        - parent
+
+    Address:
+      type: object
+      description: Address of the user
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the address (MongoDB ObjectId)
+          example: 60c78ac0d94ac8dc7a
+        userId:
+          type: string
+          description: ObjectId reference to the user who owns the address
+          example: 60c8a7d09ca8d74d8d
+        label:
+          type: string
+          description: Label for the address (e.g., Home, Office)
+          example: Home
+        recipientName:
+          type: string
+          description: Full name of the recipient
+          example: Jajang
+        street:
+          type: string
+          description: Street address
+          example: Jalan jendral Sudirman
+        city:
+          type: string
+          description: City or district
+          example: Jakarta
+        province:
+          type: string
+          description: Province or state
+          example: DKI Jakarta
+        postalCode:
+          type: string
+          description: Postal or ZIP code
+          example: 12320
+        phoneNumber:
+          type: string
+          description: Recipient's phone number
+          example: "088888888888"
+        createdAt:
+          type: string
+          format: date-time
+          description: Address creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Address last updated timestamp
+      required:
+        - _id
+        - userId
+        - label
+        - recipientName
+        - street
+        - city
+        - province
+        - postalCode
+        - phoneNumber
+
+    BankAccount:
+      type: object
+      description: Bank account of the user
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the bank account (MongoDB ObjectId)
+          example: 60c78ac0d94ac8dc7a
+        userId:
+          type: string
+          description: ObjectId reference to the user who owns the bank account
+          example: 60c8a7d09ca8d74d8d
+        type:
+          type: string
+          enum: [bank, ewallet]
+          description: Type of bank account (e.g., Bank, E-wallet)
+          example: bank
+        provider:
+          type: string
+          description: Provider of bank
+          example: bca
+        accountName:
+          type: string
+          description: Name holder of bank account
+          example: Jajang Ujang
+        accountNumber:
+          type: string
+          description: Account number of bank (rekening)
+          example: 34567324
+        createdAt:
+          type: string
+          format: date-time
+          description: Bank account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Bank account last updated timestamp
+      required:
+        - _id
+        - userId
+        - type
+        - provider
+        - accountName
+        - accountNumber
+
+
+    Order:
+      type: object
+      description:
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the order (MongoDB ObjectId)
+          example: 60c78ac0d94ac8dc7a
+        userId:
+          type: string
+          description: ObjectId reference to the user (MongoDB ObjectId)
+          example: 60c78ac0d94ac8dc7a
+        items:
+          type: array
+          description: List of item/product
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+                description: ObjectId reference to the product
+                example: 60c78ac0d94ac8dc7a
+              variant:
+                type: object
+                properties:
+                  color:
+                    type: string
+                    example: black
+                  size:
+                    type: string
+                    example: XL
+              quantity:
+                type: number
+                description: Quantity of product
+                example: 3
+              price:
+                type: number
+                description: Price of variant product if variant product exists, if not show default price
+                example: 32000
+        shippingAddress:
+          type: string
+          description: Address of the user as shipping destination (ObjectId reference of the user)
+          example: 60c78ac0d94ac8dc7a
+        paymentMethod:
+          type: string
+          description: Payment method used of the user (e.g, bank, e-wallet)
+          example: e-wallet
+        totalPrice:
+          type: number
+          description: Total price all product when user checkout
+          example: 96000
+        status:
+          type: string
+          description: Status of payment and shipping
+          example: paid
+        isPaid:
+          type: boolean
+          description: User paid or not
+          example: true
+        paidAt:
+          type: string
+          format: date-time
+          description: Time when user paid the checkout
+        shippedAt:
+          type: string
+          format: date-time
+          description: Time when product is shipped
+        completedAt:
+          type: string
+          format: date-time
+          description: When user receive the product at home
+        cancelledAt:
+          type: string
+          format: date-time
+          description: When user cancelled product order
+        createdAt:
+          type: string
+          format: date-time
+          description: Bank account creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Bank account last updated timestamp
+      required:
+        - _id
+        - userId
+        - items
+        - shippingAddress
+        - paymentMethod
+        - totalPrice
+        - status
+        - isPaid
+
+    Payment:
+      type: object
+      description: Payment record for an order
+      properties:
+        _id:
+          type: string
+          description: Unique identifier of the payment (MongoDB ObjectId)
+          example: 60c78ac0d94ac8dc7a
+        orderId:
+          type: string
+          description: ObjectId reference to the order being paid
+          example: 60c8a7d09ca8d74d8d
+        paymentType:
+          type: string
+          description: Type of payment (e.g., bank_transfer, e-wallet)
+          example: e-wallet
+        transactionStatus:
+          type: string
+          description: Status of the transaction
+          enum: [ pending, settlement, deny, cancel, expire, failure ]
+          example: settlement
+        transactionId:
+          type: string
+          description: Transaction ID from the payment gateway
+          example: abc123xyz789
+        paymentResult:
+          type: object
+          description: Additional payment result data (e.g., response from payment gateway) reserved for future use
+          example: { }
+        paidAt:
+          type: string
+          format: date-time
+          description: Timestamp when the payment was made
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the payment document was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the payment document was last updated
+      required:
+        - _id
+        - orderId
+        - paymentType
+        - transactionStatus
+        - transactionId
+
+    # Request schema
+    AuthRequestRegister:
+      type: object
+      description: Request user registration
+      properties:
+        username:
+          type: string
+          description: Username of the user
+          example: Jajang
+          minLength: 3
+        email:
+          type: string
+          format: email
+          description: Valid email of the user
+          example: jajang@example.com
+        password:
+          type: string
+          format: password
+          description: User's plain password (minimum 8 characters)
+          example: secretPassword234
+          minLength: 8
+      required:
+        - username
+        - email
+        - password
+
+    AuthRequestLogin:
+      type: object
+      description: User request login
+      properties:
+        email:
+          type: string
+          format: email
+          description: Valid email of the user
+          example: jajang@example.com
+        password:
+          type: string
+          format: password
+          description: User's plain password (minimum 8 characters)
+          example: secretPassword234
+          minLength: 8
+      required:
+        - email
+        - password
+
+    UserRequestUpdate:
+      type: object
+      description: Request body for updating user information (all fields are optional)
+      properties:
+        username:
+          type: string
+          description: Display name of the user.
+          example: johndoe
+        email:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: johndoe@example.com
+        phone:
+          type: string
+          description: Contact phone number of the user.
+          example: "+628123456789"
+
+    UserRequestUpdateAddress:
+      type: object
+      description: Request body for updating user address information (all fields are required)
+      properties:
+        label:
+          type: string
+          description: Label for the address (e.g., Home, Office)
+          example: Home
+        recipientName:
+          type: string
+          description: Full name of the recipient
+          example: Jajang
+        street:
+          type: string
+          description: Street address
+          example: Jalan jendral Sudirman
+        city:
+          type: string
+          description: City or district
+          example: Jakarta
+        province:
+          type: string
+          description: Province or state
+          example: DKI Jakarta
+        postalCode:
+          type: string
+          description: Postal or ZIP code
+          example: 12320
+        phoneNumber:
+          type: string
+          description: Recipient's phone number
+          example: "088888888888"
+      required:
+        - label
+        - recipientName
+        - street
+        - city
+        - province
+        - postalCode
+        - phoneNumber
+
+    UserRequestUpdateBankAccount:
+      type: object
+      description: Request body for updating user bank account (all fields are required)
+      properties:
+        type:
+          type: string
+          enum: [bank, ewallet]
+          description: Type of bank account (e.g., Bank, E-wallet)
+          example: bank
+        provider:
+          type: string
+          description: Provider of bank
+          example: bca
+        accountName:
+          type: string
+          description: Name holder of bank account
+          example: Jajang Ujang
+        accountNumber:
+          type: string
+          description: Account number of bank (rekening)
+          example: 34567324
+      required:
+        - type
+        - provider
+        - accountName
+        - accountNumber
