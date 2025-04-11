@@ -19,15 +19,11 @@ export const authJwt = async (req, res, next) => {
 	}
 }
 
-export const allowRole = async (req, res, next) => {
-	try{
-		const user = await checkUserExists(req.user.id);
-		if(user.role !== "admin"){
-			return res.status(403).json({ message: "Forbidden: Access denied" })
+export const allowRoles = (role) => {
+	return (req, res, next) => {
+		if(req.user.role !== role){
+			return res.status(403).json({ message: "Forbidden: Access denied!" })
 		}
-	
 		next();
-	}catch(e){
-		return res.status(500).json({ error: e.message });
 	}
 }
