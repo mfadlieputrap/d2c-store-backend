@@ -4,7 +4,7 @@ import generateToken from "../utils/generateToken.js";
 import hashPassword from "../utils/hashPassword.js";
 import comparePassword from "../utils/comparePassword.js";
 
-export const register = async (req, res) => {
+export const registerUser = async (req, res) => {
 	const errors = validationResult(req);
 	if(!errors.isEmpty()) {
 		return res.status(400).send({ errors: errors.array() });
@@ -30,7 +30,7 @@ export const register = async (req, res) => {
 	}
 }
 
-export const login = async (req, res)=>{
+export const loginUser = async (req, res)=>{
 	const errors = validationResult(req);
 	if(!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });

@@ -1,5 +1,7 @@
 import checkUserExists from "../utils/checkUserExists.js";
 import Address from "../models/Address.js";
+import applyUpdateFields from "../utils/applyUpdateFields.js";
+const allowFields = ["label", "recipientName", "street", "city", "province", "postalCode", "phoneNumber"]
 
 export const getAllAddress = async (req, res) => {
 	try{
@@ -55,9 +57,8 @@ export const updateAddress = async (req, res) => {
 			return res.status(404).json({ message: "Address not found" });
 		}
 		
-		const updatedAddress = await Address.findByIdAndUpdate(addressId,{
-			...updateData,
-		}, {new: true, runValidators: true});
+		const updatedAddress = applyUpdateFields(prevAddress, updateData, allowFields);
+		await updatedAddress.save();
 		
 		return res.status(200).json({ message: "Address updated successfully", updatedAddress });
 	}catch(e){
@@ -70,8 +71,8 @@ export const deleteAddress = async (req, res) => {
 		const { addressId } = req.params;
 		await checkUserExists(req.user.id);
 		
-		const result = await Address.deleteOne({_id: addressId, userId: req.user.id});
-		if(result.deletedCount === 0){
+		const result = await Address.findOneAndDelete({_id: addressId, userId: req.user.id});
+		if(!result){
 			return res.status(404).json({ message: "Address not found or already deleted" });
 		}
 		

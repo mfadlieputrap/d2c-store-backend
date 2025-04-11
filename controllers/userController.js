@@ -4,7 +4,7 @@ import comparePassword from "../utils/comparePassword.js";
 import hashPassword from "../utils/hashPassword.js";
 import {validationResult} from "express-validator";
 
-export const update = async (req, res) => {
+export const updateUser = async (req, res) => {
 	try {
 		await checkUserExists(req.user.id);
 		const updateData = req.body;
