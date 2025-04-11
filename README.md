@@ -31,13 +31,19 @@ This is the backend service for a Direct-to-Consumer (D2C) fashion brand store. 
 
 ```bash 
 d2c-store-backend/
-├───config
-├───controllers
+├───config/
+├───controllers/
+│   ├───addressController.js
+│   ├───authController.js
+│   ├───bankAccountController.js
+|   └───userController.js
 ├───docs/
 │   ├───components/
 |   |   ├───responses.yaml
 |   |   └───schemas.yaml
-│   ├───paths
+│   ├───paths/
+|   |   ├───authApi.yaml
+|   |   └───userApi.yaml
 |   └───openapi.yaml
 ├───middleware/
 |   └───authMiddleware.yaml
@@ -51,7 +57,7 @@ d2c-store-backend/
 |   ├───Product.js
 |   ├───User.js
 |   └───Wishlist.js
-├───routes
+├───routes/
 ├───utils/
 |   ├───checkUserExists.js
 |   ├───comparePassword.js
@@ -61,3 +67,51 @@ d2c-store-backend/
     └───authValidator.js
 
 ```
+---
+
+## 📖 API Documentation
+
+All API endpoints are documented in `docs/openapi.yaml`. You can view it with Swagger UI, Postman, or Redocly.
+
+---
+
+## 🛠️ Getting Started
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run development server
+npm run dev
+
+# 3. Environment Variables
+# Create .env file based on .env.example (coming soon)
+
+```
+
+---
+
+## 🧪 Testing (Coming Soon)
+
+I will add test coverage once core features are completed
+
+---
+
+## 📌 Note
+
+This project is part of a portfolio to demonstrate secure backend design using RBAC, modular architecture, and to showcase my knowledge and practical understanding of backend development
+
+---
+
+## 📬 Contact
+
+Feel free to reach out if you're curious about the project or want to collaborate:  
+  
+- 📧 **Email**: mfadlieputrap@gmail.com
+- 💼 **linkedin**: [linkedin.com/in/mfadlieputrap](https://www.linkedin.com/in/mfadlieputrap)
+
+---
+
+## 👨‍💻 Author
+
+Name: Muhamad Fadlie Putra Pratama
