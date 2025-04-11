@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/d2c-store-backend.iml" filepath="$PROJECT_DIR$/.idea/d2c-store-backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../user-management-api/.idea/user-management-api.iml" filepath="$PROJECT_DIR$/../user-management-api/.idea/user-management-api.iml" />
     </modules>
   </component>
 </project>

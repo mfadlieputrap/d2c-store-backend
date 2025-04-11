@@ -5,7 +5,102 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8080/api
-paths: null
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequestRegister'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthSuccess'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequestLogin'
+      responses:
+        '200':
+          $ref: '#/components/responses/LoginSuccess'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /user/profile:
+    get:
+      tags:
+        - User
+      summary: Endpoint for get user information profile
+      operationId: getUserProfile
+      responses:
+        '200':
+          $ref: '#/components/responses/GetProfileSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /user/update:
+    put:
+      tags:
+        - User
+      summary: Endpoint for updating user data
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserUpdateSuccess'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /user/delete:
+    delete:
+      tags:
+        - User
+      summary: Endpoint for user delete profile or account
+      operationId: deleteUser
+      responses:
+        '200':
+          $ref: '#/components/responses/UserDeletedSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 components:
   securitySchemes:
     bearerAuth:
@@ -607,3 +702,186 @@ components:
         - provider
         - accountName
         - accountNumber
+    AuthResponse:
+      type: object
+      description: |
+        Retrieved JWT token after successful login.  The token payload contains:
+          - userId: ObjectId of the user
+          - role: User role (e.g., admin or customer)
+      properties:
+        message:
+          type: string
+          example: Registration successfully
+        token:
+          type: string
+          format: JWT
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    LoginResponse:
+      type: object
+      description: |
+        Retrieved JWT token after successful login.  The token payload contains:
+          - userId: ObjectId of the user
+          - role: User role (e.g., admin or customer)
+      properties:
+        message:
+          type: string
+          example: Login successful
+        token:
+          type: string
+          format: JWT
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    schemas-User:
+      type: object
+      description: Basic user information used across the application.
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the user (MongoDB ObjectId).
+          example: 60c72b2f9e7f8e001cfd4c0a
+        username:
+          type: string
+          description: Display name of the user.
+          example: johndoe
+        email:
+          type: string
+          format: email
+          description: Email address of the user.
+          example: johndoe@example.com
+        phone:
+          type: string
+          description: Contact phone number of the user.
+          example: '+628123456789'
+        role:
+          type: string
+          description: Role assigned to the user (e.g., buyer, seller, admin).
+          example: buyer
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the user was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of the last update to the user profile.
+      required:
+        - _id
+        - username
+        - email
+        - phone
+        - role
+  responses:
+    AuthSuccess:
+      description: Register success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthResponse'
+    BadRequest:
+      description: Invalid input or missing parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid input data
+    InternalServerError:
+      description: Something went wrong on the server
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal server error
+    LoginSuccess:
+      description: Login success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginResponse'
+    GetProfileSuccess:
+      description: Success get data information profile user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/schemas-User'
+          examples:
+            success:
+              $ref: '#/components/examples/GetUserProfileExample'
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid or missing token
+    Forbidden:
+      description: Access denied due to insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: 'Forbidden: You are not allowed to perform this action'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
+    UserUpdateSuccess:
+      description: User success update data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: User updated successfully
+              data:
+                type: object
+          examples:
+            success:
+              $ref: '#/components/examples/UserUpdateSuccessExample'
+    UserDeletedSuccess:
+      description: User deleted response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: User deleted successfully
+  examples:
+    GetUserProfileExample:
+      description: Example of get profile user success response
+      value:
+        message: Get profile successfully
+        data:
+          _id: 60c6d7ac8b7d56ab6cb7a
+          username: johndoe
+          email: johndoe@example.com
+          phone: '081234567890'
+    UserUpdateSuccessExample:
+      description: Example of user update success response
+      value:
+        message: User update successfully
+        data:
+          _id: 60c6d7ac8b7d56ab6cb7a
+          username: johndoeUpdated
+          email: johndoe@example.com
+          phone: '081234567890'

@@ -1,9 +1,62 @@
-openapi: 3.1.0
-info:
-  title: Title
-  description: Title
-  version: 1.0.0
-servers:
-  - url: 'https'
 paths:
-  
+  /user/profile:
+    get:
+      tags:
+        - User
+      summary: Endpoint for get user information profile
+      operationId: getUserProfile
+      responses:
+        200:
+          $ref: '../components/responses.yaml#/components/responses/GetProfileSuccess'
+        401:
+          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
+        403:
+          $ref: '../components/responses.yaml#/components/responses/Forbidden'
+        404:
+          $ref: '../components/responses.yaml#/components/responses/NotFound'
+        500:
+          $ref: '../components/responses.yaml#/components/responses/InternalServerError'
+
+  /user/update:
+    put:
+      tags:
+        - User
+      summary: Endpoint for updating user data
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas.yaml#/components/schemas/UserRequestUpdate'
+      responses:
+        200:
+          $ref: '../components/responses.yaml#/components/responses/UserUpdateSuccess'
+        400:
+            $ref: "../components/responses.yaml#/components/responses/BadRequest"
+        401:
+          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
+        403:
+          $ref: '../components/responses.yaml#/components/responses/Forbidden'
+        404:
+          $ref: '../components/responses.yaml#/components/responses/NotFound'
+        500:
+          $ref: '../components/responses.yaml#/components/responses/InternalServerError'
+
+  /user/delete:
+    delete:
+      tags:
+        - User
+      summary: Endpoint for user delete profile or account
+      operationId: deleteUser
+      responses:
+        200:
+          $ref: '../components/responses.yaml#/components/responses/UserDeletedSuccess'
+        401:
+          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
+        403:
+          $ref: '../components/responses.yaml#/components/responses/Forbidden'
+        404:
+          $ref: '../components/responses.yaml#/components/responses/NotFound'
+        500:
+          $ref: '../components/responses.yaml#/components/responses/InternalServerError'

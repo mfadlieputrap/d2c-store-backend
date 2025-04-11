@@ -1,0 +1,21 @@
+components:
+  examples:
+    UserUpdateSuccessExample:
+      description: Example of user update success response
+      value:
+        message: User update successfully
+        data:
+          _id: 60c6d7ac8b7d56ab6cb7a
+          username: johndoeUpdated
+          email: johndoe@example.com
+          phone: "081234567890"
+
+    GetUserProfileExample:
+      description: Example of get profile user success response
+      value:
+        message: Get profile successfully
+        data:
+          _id: 60c6d7ac8b7d56ab6cb7a
+          username: johndoe
+          email: johndoe@example.com
+          phone: "081234567890"

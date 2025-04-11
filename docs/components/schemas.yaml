@@ -509,12 +509,12 @@ components:
           type: string
           format: email
           description: Valid email of the user
-          example: jajang@example.com
+          example: "jajang@example.com"
         password:
           type: string
           format: password
           description: User's plain password (minimum 8 characters)
-          example: secretPassword234
+          example: "secretPassword234"
           minLength: 8
       required:
         - email
@@ -537,6 +537,48 @@ components:
           type: string
           description: Contact phone number of the user.
           example: "+628123456789"
+
+    UserRequestAddAddress:
+      type: object
+      description: Requet body for adding user address information (all fields are required)
+      properties:
+        label:
+          type: string
+          description: Label for the address (e.g., Home, Office)
+          example: Home
+          recipientName:
+            type: string
+            description: Full name of the recipient
+            example: Jajang
+          street:
+            type: string
+            description: Street address
+            example: Jalan jendral Sudirman
+          city:
+            type: string
+            description: City or district
+            example: Jakarta
+          province:
+            type: string
+            description: Province or state
+            example: DKI Jakarta
+          postalCode:
+            type: string
+            description: Postal or ZIP code
+            example: 12320
+          phoneNumber:
+            type: string
+            description: Recipient's phone number
+            example: "088888888888"
+          required:
+            - label
+            - recipientName
+            - street
+            - city
+            - province
+            - postalCode
+            - phoneNumber
+
 
     UserRequestUpdateAddress:
       type: object
@@ -605,3 +647,36 @@ components:
         - provider
         - accountName
         - accountNumber
+
+    # Response Schema
+    LoginResponse:
+      type: object
+      description: >
+        Retrieved JWT token after successful login. 
+        The token payload contains:
+          - userId: ObjectId of the user
+          - role: User role (e.g., admin or customer)
+      properties:
+        message:
+          type: string
+          example: "Login successful"
+        token:
+          type: string
+          format: JWT
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    AuthResponse:
+      type: object
+      description: >
+        Retrieved JWT token after successful login. 
+        The token payload contains:
+          - userId: ObjectId of the user
+          - role: User role (e.g., admin or customer)
+      properties:
+        message:
+          type: string
+          example: "Registration successfully"
+        token:
+          type: string
+          format: JWT
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

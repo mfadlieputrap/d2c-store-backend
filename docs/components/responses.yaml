@@ -1,9 +1,156 @@
-openapi: 3.1.0
-info:
-  title: Title
-  description: Title
-  version: 1.0.0
-servers:
-  - url: 'https'
-paths:
-  
+components:
+  responses:
+    AuthSuccess:
+      description: Register success
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/components/schemas/AuthResponse'
+
+    LoginSuccess:
+      description: Login success
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/components/schemas/LoginResponse'
+
+    GetProfileSuccess:
+      description: Success get data information profile user
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/components/schemas/User'
+          examples:
+            success:
+              $ref: '../components/examples.yaml#/components/examples/GetUserProfileExample'
+
+
+    UserDeletedSuccess:
+      description: User deleted response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: User deleted successfully
+
+    UserUpdateSuccess:
+      description: User success update data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: User updated successfully
+              data:
+                type: object
+          examples:
+            success:
+              $ref: '../components/examples.yaml#/components/examples/UserUpdateSuccessExample'
+
+    Ok:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Request successful"
+
+    Created:
+      description: Resource created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource created successfully
+              data:
+                type: object
+                example: {}
+
+    NoContent:
+      description: Resource deleted successfully (No Content)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource deleted successfully
+
+    BadRequest:
+      description: Invalid input or missing parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid input data
+
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Invalid or missing token
+
+    Forbidden:
+      description: Access denied due to insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: You are not allowed to perform this action"
+
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
+
+    Conflict:
+      description: Resource already exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Email already exists
+
+    InternalServerError:
+      description: Something went wrong on the server
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal server error
+
