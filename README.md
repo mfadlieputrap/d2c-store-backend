@@ -27,7 +27,7 @@ This is the backend service for a Direct-to-Consumer (D2C) fashion brand store. 
 
 ---
 
-## 📂 Project Structure (Partial)
+## 📂 Project Structure (Current)
 
 ```bash 
 d2c-store-backend/
