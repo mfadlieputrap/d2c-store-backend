@@ -23,7 +23,7 @@ export const updateUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
 	try{
-		const user = await checkUserExists(req.user.id);
+		const user = req.userData;
 		
 		return res.status(200).json({ message: "User profile retrieved", user});
 	}catch(e){
