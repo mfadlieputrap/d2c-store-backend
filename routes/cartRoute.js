@@ -10,10 +10,10 @@ import {
 import {cartValidation, updateQuantityValidation} from "../validators/entityValidator.js";
 const router = express.Router();
 
-router.post('/add', authJwt, allowRoles('customer'), ...cartValidation, handleValidator, addProductToCart);
-router.get('/', authJwt, allowRoles('customer'), getCartByUserId);
-router.put('/update-quantity', authJwt, allowRoles('customer'), ...updateQuantityValidation, handleValidator, updateQuantity);
-router.delete('/delete', authJwt, allowRoles('customer'), deleteAllCartItem);
-router.delete('/delete/:id', authJwt, allowRoles('customer'), deleteProductFromCart);
+router.post('/add',...cartValidation, handleValidator, addProductToCart);
+router.get('/', getCartByUserId);
+router.put('/update-quantity', ...updateQuantityValidation, handleValidator, updateQuantity);
+router.delete('/delete', deleteAllCartItem);
+router.delete('/delete/:id', deleteProductFromCart);
 
 export default router;
