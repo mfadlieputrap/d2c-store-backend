@@ -12,7 +12,7 @@ This is the backend service for a Direct-to-Consumer (D2C) fashion brand store. 
 - [x] User Authentication (Register/Login)
 - [x] User Profile & Role-based Access Control (RBAC)
 - [x] Address & Bank Account Management
-- [ ] Product & Catalog Management
+- [x] Product & Catalog Management
 - [ ] Order Processing
 - [ ] Payment Integration with Midtrans
 
