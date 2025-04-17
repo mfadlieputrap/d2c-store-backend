@@ -9,7 +9,7 @@ const checkUserExists = async (req, res, next) => {
 			return res.status(401).json({ message: 'Invalid or missing user ID' });
 		}
 		
-		const user = await User.findById(userId).select("-password");
+		const user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' });
 		}
@@ -18,6 +18,7 @@ const checkUserExists = async (req, res, next) => {
 		
 		next();
 	} catch (e) {
+		console.error("Error: ", e.message)
 		return res.status(500).json({ error: e.message });
 	}
 };

@@ -1,7 +1,5 @@
-import { body } from 'express-validator';
+import { body, param} from 'express-validator';
 import mongoose from "mongoose";
-import User from "../models/User.js";
-import Product from "../models/Product.js";
 import {mongoIdValidator} from "../utils/customValidators.js";
 
 export const changePasswordValidation = [
@@ -16,8 +14,10 @@ export const changePasswordValidation = [
 
 export const updateUserValidation = [
 	body('username')
+		.optional()
 		.notEmpty().withMessage("Username is required"),
 	body('email')
+		.optional()
 		.notEmpty().withMessage("Please enter a valid email")
 		.isEmail().withMessage("Please enter a valid email"),
 	body('phone')
@@ -113,14 +113,6 @@ export const productValidation = (isUpdate = false) => [
 		.optional({ checkFalsy: true })
 		.isURL().withMessage('Each image must be a valid URL')
 		.matches(/\.(jpg|jpeg|png|webp)$/i).withMessage('Image must be jpg, jpeg, png, or webp'),
-
-body('defaultPrice')
-	.optional({ checkFalsy: true })
-		.isFloat({ gt: 0 }).withMessage('Default price must be greater than 0'),
-	
-	body('defaultStock')
-		.optional({ checkFalsy: true })
-		.isInt({ gt: 0 }).withMessage('Default stock must be greater than 0'),
 	
 	body('variants')
 		.if((value, { req }) => !isUpdate || req.body.variants)
@@ -158,3 +150,47 @@ export const categoryValidation = (isUpdate = false) => [
 		.optional({ checkFalsy: true })
 		.custom((val) => mongoose.Types.ObjectId.isValid(val)).withMessage(`${field} is not a valid MongoDB ObjectId`)
 ]
+
+export const createPaymentValidation = [
+	body('orderId')
+		.notEmpty().withMessage('Order ID is required')
+		.isMongoId().withMessage('Invalid Order ID format'),
+	
+	body('paymentType')
+		.notEmpty().withMessage('Payment type is required')
+		.isString().withMessage('Payment type must be a string'),
+	
+	body('transactionStatus')
+		.notEmpty().withMessage('Transaction status is required')
+		.isIn(['pending', 'settlement', 'cancel', 'expire', 'deny', 'failure'])
+		.withMessage('Invalid transaction status'),
+	
+	body('transactionId')
+		.notEmpty().withMessage('Transaction ID is required')
+		.isString().withMessage('Transaction ID must be a string'),
+	
+	body('paymentResult')
+		.optional()
+		.isObject().withMessage('Payment result must be an object'),
+	
+	body('paidAt')
+		.optional()
+		.isISO8601().withMessage('Invalid paidAt date format')
+];
+
+export const updatePaymentStatusValidation = [
+	param('orderId')
+		.notEmpty().withMessage('Order ID is required')
+		.isMongoId().withMessage('Invalid Order ID format'),
+	
+	body('transactionStatus')
+		.notEmpty().withMessage('Transaction status is required')
+		.isIn(['pending', 'settlement', 'cancel', 'expire', 'deny', 'failure'])
+		.withMessage('Invalid transaction status')
+];
+
+export const getPaymentByOrderIdValidation = [
+	param('orderId')
+		.notEmpty().withMessage('Order ID is required')
+		.isMongoId().withMessage('Invalid Order ID format')
+];

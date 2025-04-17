@@ -1,7 +1,7 @@
 import Cart from "../models/Cart.js";
 import checkStock from "../utils/checkStock.js";
 
-export const getChartByUserId = async (req, res) => {
+export const getCartByUserId = async (req, res) => {
 	try {
 		const userId = req.user.id;
 		const cartItems = await Cart.find({userId}).sort({ createdAt: -1 }).populate('productId', 'name defaultPrice variants').lean();
@@ -18,7 +18,7 @@ export const getChartByUserId = async (req, res) => {
 		return res.status(500).json({error: e.message});
 	}
 }
-export const addProductToChart = async (req, res) => {
+export const addProductToCart = async (req, res) => {
 	try {
 		const { productId, variant, quantity } = req.body;
 		if(quantity <=0){
@@ -45,7 +45,7 @@ export const addProductToChart = async (req, res) => {
 	}
 }
 
-export const deleteProductFromChart = async (req, res) => {
+export const deleteProductFromCart = async (req, res) => {
 	try {
 		const {cartItemId} = req.params;
 		

@@ -25,7 +25,6 @@ beforeAll(async () => {
 
 describe('Auth tanpa DB (mock)', ()=>{
 	it('register user successfully', async ()=>{
-		console.log(User.findOne);
 		User.findOne.mockResolvedValue(null);
 		User.create.mockResolvedValue(dummyUser);
 		
@@ -36,8 +35,6 @@ describe('Auth tanpa DB (mock)', ()=>{
 				email: dummyUser.email,
 				password: 'Password123!'
 			});
-		
-		console.log(res.body);
 		
 		expect(res.status).toBe(201);
 		expect(res.body).toHaveProperty('message');

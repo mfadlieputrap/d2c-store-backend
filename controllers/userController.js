@@ -6,7 +6,6 @@ import {validationResult} from "express-validator";
 
 export const updateUser = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const updateData = req.body;
 		const updatedData = await User.findByIdAndUpdate(req.user.id,{
 			...updateData,
@@ -33,8 +32,7 @@ export const getProfile = async (req, res) => {
 
 export const deleteProfile = async (req, res) => {
 	try{
-		await checkUserExists(req.user.id);
-		const result = await User.deleteOne({_id: req.user.id});
+		const result = await User.findByIdAndDelete(req.user.id);
 		
 		return res.status(200).json({
 			message: "Profile deleted successfully",
@@ -51,9 +49,8 @@ export const changePassword = async (req, res) => {
 		return res.status(400).json({ errors: errors.array() });
 	}
 	try{
-		await checkUserExists(req.user.id);
 		const { currentPassword, newPassword } = req.body;
-		const user = await User.findById(req.user.id);
+		const user = await User.findById(req.user.id).select('+password');
 		const isPasswordValid = await comparePassword(currentPassword, user.password);
 		if(!isPasswordValid){
 			return res.status(401).json({ message: "Invalid password" });
@@ -63,6 +60,7 @@ export const changePassword = async (req, res) => {
 		
 		return res.status(200).json({ message: "Change password successfully" });
 	}catch(e){
+		console.error("Error: ", e.message);
 		return res.status(500).json({ error: e.message });
 	}
 }

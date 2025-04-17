@@ -4,4 +4,5 @@ export default {
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.js$': '$1', // agar import path bisa tanpa .js
 	},
+	setupFilesAfterEnv: ['./tests/testSetup.js'],
 };

@@ -12,28 +12,39 @@ const productSchema = new mongoose.Schema({
 	},
 	description: {
 		type: String,
+		required: true
 	},
 	detail:{
 		type: String,
-	},
-	defaultPrice: {
-		type: Number,
-		required: true,
-	},
-	defaultStock:{
-		type: Number,
-		required: true,
+		required: true
 	},
 	category: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Category'
+		ref: 'Category',
+		required: true
 	},
 	variants:[
 		{
-			color: String,
-			size: String,
-			stock: Number,
-			price: Number
+			color: {
+				type: String,
+				required: true
+			},
+			sizes:[
+				{
+					size: {
+						type: String,
+						required: true
+					},
+					stock: {
+						type: Number,
+						required: true
+					},
+					price: {
+						type: Number,
+						required: true
+					}
+				}
+			]
 		}
 	],
 	images:{
@@ -45,6 +56,13 @@ const productSchema = new mongoose.Schema({
 		default: true
 	}
 }, { timestamps: true });
+
+productSchema.pre('validate', function(next){
+	if(!this.variants || this.variants.length === 0){
+		this.invalidate('variants', 'At least one variant is required');
+	}
+	next();
+});
 
 productSchema.pre('save', function (next) {
 	if(!this.slug && this.name){

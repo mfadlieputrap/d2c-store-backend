@@ -3,9 +3,6 @@ import Category from "../models/Category.js";
 export const addCategory = async (req, res) => {
 	try {
 		const { name, parent } = req.body;
-		if(!name){
-			return  res.status(400).json({ error: "Name is required" });
-		}
 		
 		const existing = await Category.findOne({name});
 		if(existing){
