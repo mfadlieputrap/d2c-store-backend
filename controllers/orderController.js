@@ -74,8 +74,7 @@ export const getAllOrders = async (req, res) => {
 
 export const getAllOrdersByUserId = async (req, res) => {
 	try {
-		// Ambil userId dari parameter request (biasanya dari token JWT)
-		const userId = req.user._id; // atau req.params.id kalau user ingin akses lewat URL
+		const userId = req.user.id;
 		
 		// Ambil semua order berdasarkan userId
 		const orders = await Order.find({ userId })

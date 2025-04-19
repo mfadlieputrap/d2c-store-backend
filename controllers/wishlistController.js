@@ -3,8 +3,7 @@ import Wishlist from "../models/Wishlist.js";
 
 export const getWishlistByUserId = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
-		const wishlists = await Wishlist.find({userId: req.user.id}).populate("productId", "name defaultPrice");
+		const wishlists = await Wishlist.find({userId: req.user.id}).populate("product", "name variants.price");
 		
 		return res.status(200).json({ message: "Wishlist user retrieved", wishlists});
 	} catch (e) {
@@ -13,17 +12,16 @@ export const getWishlistByUserId = async (req, res) => {
 }
 export const addProductToWishlist = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
-		const {productId} = req.params;
+		const {productId: product} = req.body;
 		
-		const existing = await Wishlist.findOne({userId: req.user.id, productId});
+		const existing = await Wishlist.findOne({userId: req.user.id, product});
 		if(existing){
 			return res.status(409).json({ message: "Product already in wishlist"});
 		}
 		
 		const wishlist = await Wishlist.create({
 			userId: req.user.id,
-			productId
+			product
 		})
 		
 		return res.status(201).json({ message: "Product added to wishlist successfully", wishlist});
@@ -33,7 +31,6 @@ export const addProductToWishlist = async (req, res) => {
 }
 export const deleteProductFromWishlist = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const {wishlistId} = req.params;
 		const result = await Wishlist.findByIdAndDelete(wishlistId);
 		if(!result){

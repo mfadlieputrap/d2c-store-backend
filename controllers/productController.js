@@ -31,6 +31,7 @@ export const getProducts = async (req, res) => {
 			}
 		});
 	} catch (e) {
+		console.error("Error: ", e.message)
 		return res.status(500).json({error: e.message});
 	}
 }
@@ -55,7 +56,7 @@ export const getProductsByCategory = async (req, res) => {
 			pagination:{
 				page,
 				limit,
-				skip,
+				total,
 				totalPages: Math.ceil(total / limit)
 			}
 		});
@@ -71,7 +72,7 @@ export const getProductById = async (req, res) => {
 		if(!product) {
 			return res.status(404).json({ message: "Product not found" });
 		}
-		return res.status(200).json({ message: "Product detail retrieved",product });
+		return res.status(200).json({ message: "Product detail retrieved", product });
 	} catch (e) {
 		return res.status(500).json({error: e.message});
 	}
@@ -87,6 +88,7 @@ export const updateProduct = async (req, res) => {
 		
 		return res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
 	} catch (e) {
+		console.error("Error: ", e.message);
 		return res.status(500).json({error: e.message});
 	}
 }
