@@ -8,9 +8,9 @@ import checkUserExists from "../utils/checkUserExists.js";
 
 const router = express.Router();
 
-router.get('/profile', authJwt, allowRoles('customer'), checkUserExists, getProfile);
-router.put('/update/', authJwt, checkUserExists, allowRoles('customer'), ...updateUserValidation, handleValidator, updateUser);
-router.put('/change-password', authJwt, checkUserExists, allowRoles('customer'), ...changePasswordValidation, handleValidator, changePassword);
-router.delete('/delete', authJwt, checkUserExists, allowRoles('customer'), deleteProfile);
+router.get('/profile', getProfile);
+router.put('/update/', ...updateUserValidation, handleValidator, updateUser);
+router.put('/change-password', ...changePasswordValidation, handleValidator, changePassword);
+router.delete('/delete', deleteProfile);
 
 export default router;

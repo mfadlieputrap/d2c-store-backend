@@ -11,10 +11,10 @@ import {
 } from "../controllers/addressController.js";
 const router = express.Router();
 
-router.post('/add', authJwt, allowRoles('customer'), ...addressValidation, handleValidator, addAddress);
-router.put('/update/:id', authJwt, allowRoles('customer'), ...addressValidation, handleValidator, updateAddress);
-router.delete('/delete/:id', authJwt, allowRoles('customer'), deleteAddress);
-router.get('/', authJwt, allowRoles('customer'), getAllAddress);
-router.get('/:id', authJwt, allowRoles('customer'), getAddressById);
+router.post('/add', ...addressValidation, handleValidator, addAddress);
+router.put('/update/:addressId', updateAddress);
+router.delete('/delete/:addressId', deleteAddress);
+router.get('/', getAllAddress);
+router.get('/:id', getAddressById);
 
 export default router;

@@ -1,5 +1,4 @@
 import express from 'express';
-import checkUserExists from "../utils/checkUserExists.js";
 import {
 	addProduct, deleteProduct,
 	getProductById,
@@ -8,13 +7,16 @@ import {
 	updateProduct
 } from "../controllers/productController.js";
 import {allowRoles, authJwt} from "../middleware/authMiddleware.js";
+import checkUserExists from "../utils/checkUserExists.js";
+import {productValidation} from "../validators/entityValidator.js";
+import handleValidator from "../middleware/handleValidator.js";
 const router = express.Router();
 
-router.post('/add', authJwt, allowRoles('admin'), addProduct);
-router.put('/update/:productId', updateProduct);
+router.post('/add', authJwt, checkUserExists, allowRoles(['admin']), ...productValidation(), handleValidator, addProduct);
+router.put('/update/:productId', authJwt, checkUserExists, allowRoles(['admin']), ...productValidation(true), handleValidator, updateProduct);
 router.get('/', getProducts);
 router.get('/category/:categoryId', getProductsByCategory);
-router.delete('/delete/:productId', deleteProduct);
+router.delete('/delete/:productId', authJwt, checkUserExists, allowRoles(['admin']), deleteProduct);
 router.get('/:productId', getProductById);
 
 export default router;

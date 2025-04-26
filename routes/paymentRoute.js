@@ -4,7 +4,7 @@ import {
 	getPaymentByOrderId,
 	getAllPayments,
 	updatePaymentStatus,
-	handleMidtransCallback
+	handleMidtransCallback, deletePayment
 } from '../controllers/paymentController.js';
 
 import {
@@ -18,17 +18,14 @@ import { authJwt, allowRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// ✅ Buat payment (biasanya hanya admin/backend yang boleh buat manual)
+
 router.post(
-	'/',
+	'/create',
 	authJwt,
-	allowRoles('admin'), // atau 'seller' juga bisa, tergantung rules di projectmu
-	...createPaymentValidation,
-	handleValidator,
+	allowRoles(['admin']),
 	createPayment
 );
 
-// ✅ Ambil semua payment (biasanya admin)
 router.get(
 	'/',
 	authJwt,
@@ -36,27 +33,22 @@ router.get(
 	getAllPayments
 );
 
-// ✅ Ambil detail payment by orderId (bisa admin, atau buyer kalau mau disesuaikan)
 router.get(
 	'/:orderId',
 	authJwt,
-	allowRoles('admin', 'buyer'),
-	...getPaymentByOrderIdValidation,
-	handleValidator,
+	allowRoles(['admin', 'customer']),
 	getPaymentByOrderId
 );
 
-// ✅ Update status pembayaran (misal untuk mark sebagai refund/expired dsb)
-router.patch(
+router.put(
 	'/:orderId/status',
 	authJwt,
-	allowRoles('admin'),
-	...updatePaymentStatusValidation,
-	handleValidator,
+	allowRoles(['admin']),
 	updatePaymentStatus
 );
 
-// ✅ Midtrans callback endpoint (tidak perlu auth, tapi amankan pakai signature validation)
 router.post('/midtrans/callback', handleMidtransCallback);
+
+router.delete('/delete/:orderId', authJwt, allowRoles(['admin']), deletePayment);
 
 export default router;

@@ -8,12 +8,13 @@ import {
 	updateQuantity
 } from "../controllers/cartController.js";
 import {cartValidation, updateQuantityValidation} from "../validators/entityValidator.js";
+import checkUserExists from "../utils/checkUserExists.js";
 const router = express.Router();
 
 router.post('/add',...cartValidation, handleValidator, addProductToCart);
 router.get('/', getCartByUserId);
-router.put('/update-quantity', ...updateQuantityValidation, handleValidator, updateQuantity);
+router.put('/quantity/:cartItemId', ...updateQuantityValidation, handleValidator, updateQuantity);
 router.delete('/delete', deleteAllCartItem);
-router.delete('/delete/:id', deleteProductFromCart);
+router.delete('/delete/:cartItemId', deleteProductFromCart);
 
 export default router;

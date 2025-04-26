@@ -10,10 +10,10 @@ import {
 } from "../controllers/bankAccountController.js";
 const router = express.Router();
 
-router.post('/add', authJwt, allowRoles('customer'), ...bankAccountValidation, handleValidator, addBankAccount);
-router.get('/', authJwt, allowRoles('customer'), getAllBankAccount);
-router.put('/update/:id', authJwt, allowRoles('customer', ...bankAccountValidation, handleValidator, updateBankAccount));
-router.delete('/delete/:id', authJwt, allowRoles('customer'), deleteBankAccount);
-router.get('/:id', authJwt, allowRoles('customer'), getBankAccountById);
+router.post('/add', ...bankAccountValidation(), handleValidator, addBankAccount);
+router.get('/', getAllBankAccount);
+router.put('/update/:bankAccountId', ...bankAccountValidation(true), handleValidator, updateBankAccount);
+router.delete('/delete/:bankAccountId', deleteBankAccount);
+router.get('/:bankAccountId', getBankAccountById);
 
 export default router;
