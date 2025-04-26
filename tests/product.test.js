@@ -1,41 +1,15 @@
 import request from 'supertest';
 import app from '../app.js';
-import jwt from 'jsonwebtoken';
 import {beforeAll, jest} from '@jest/globals';
-import dotenv from 'dotenv';
 import Product from '../models/Product.js';
-dotenv.config();
+import {genToken, dummyProductRaw, dummyProductPopulated, dummyUser} from "../utils/dummyHelper.js";
+import User from "../models/User.js";
 
-let dummyProductRaw;
-let dummyProductPopulated;
-let token;
+let adminToken;
 
 beforeAll(async()=>{
-	token = await jwt.sign({ id: "66294265e51dfd7c7d6a8d94", role: "admin"}, process.env.JWT_SECRET, { expiresIn: '2h'});
-	
-	dummyProductRaw = {
-		_id: "66294265e51dfd7c7d6a8c45",
-		name: "Keyboard Gaming",
-		description: "Keyboard gaming with RGB backlight and red Switch",
-		detail: "Keyboard gaming compact 60% with backlight RGB and red switch hotswap",
-		variants:[{
-			color: "Full Black",
-			size: "60%",
-			stock: 300,
-			price: 178000
-		}],
-		images: "keyboard-gaming.jpg",
-		category: "66294265e51dfd7c7d6a8c96"
-	}
-	
-	dummyProductPopulated = {
-		...dummyProductRaw,
-		category: {
-			_id: "66294265e51dfd7c7d6a8c96",
-			name: "Keyboard"
-		}
-	}
-	
+	adminToken = await genToken(true);
+	User.findById = jest.fn().mockResolvedValue(dummyUser);
 	Product.create = jest.fn().mockResolvedValue(dummyProductRaw);
 	Product.find = jest.fn((query) => {
 		if (query && query.category === dummyProductRaw.category) {
@@ -76,7 +50,7 @@ describe('Product API', ()=>{
 	it('Create Product', async()=>{
 		const res = await request(app)
 			.post('/api/products/add')
-			.set('Authorization', `Bearer ${token}`)
+			.set('Authorization', `Bearer ${adminToken}`)
 			.send({
 				name: "Keyboard Gaming",
 				description: "Keyboard gaming with RGB backlight and red Switch",
@@ -88,7 +62,7 @@ describe('Product API', ()=>{
 					stock: 300,
 					price: 178000
 				}],
-				images: "keyboard-gaming.jpg"
+				images: ["keyboard-gaming.jpg"]
 			})
 		
 		expect(res.status).toBe(201);
@@ -144,6 +118,7 @@ describe('Product API', ()=>{
 	it('Update Product', async() =>{
 		const res = await request(app)
 			.put('/api/products/update/66294265e51dfd7c7d6a8c45')
+			.set('Authorization',`Bearer ${adminToken}`)
 			.send({
 				description: 'Update Product',
 			})
@@ -156,6 +131,7 @@ describe('Product API', ()=>{
 	it('Delete product', async ()=>{
 		const res = await request(app)
 			.delete('/api/products/delete/66294265e51dfd7c7d6a8c45')
+			.set('Authorization', `Bearer ${adminToken}`);
 		
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
