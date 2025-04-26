@@ -15,7 +15,7 @@ const checkUserExists = async (req, res, next) => {
 		}
 		
 		req.userData = user;
-		
+		console.log(req.userData);
 		next();
 	} catch (e) {
 		console.error("Error: ", e.message)
