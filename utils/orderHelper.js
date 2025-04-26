@@ -10,8 +10,10 @@ export const validateOrderItems = async (items)=>{
 		const product = await Product.findById(item.productId);
 		if(!product) throw new Error("Product not found");
 		const variant = product.variants.find(v => v.color === item.variant?.color);
+		console.log(variant)
 		if(!variant) throw new Error("Variant color not found");
 		const sizeObj = variant.sizes.find(s => s.size === item.variant?.size);
+		console.log(sizeObj);
 		if(!sizeObj) throw new Error("Variant size not found");
 		if(sizeObj.stock < item.quantity) throw new Error("Not enough stock");
 		
