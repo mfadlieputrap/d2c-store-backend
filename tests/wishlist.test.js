@@ -1,40 +1,14 @@
 import request from 'supertest';
 import app from '../app.js';
 import {beforeAll, expect, jest} from "@jest/globals";
-import jwt from 'jsonwebtoken';
-import dotenv from "dotenv";
 import Wishlists from '../models/Wishlist.js';
 import User from "../models/User.js";
-dotenv.config();
+import {dummyUser, dummyWishlistPopulated, dummyWishlistRaw, genToken} from "../utils/dummyHelper.js";
 
 let token;
 
 beforeAll(async()=>{
-	const dummyUser = {
-		_id: '66294265e51dfd7c7d6a8d94'
-	};
-	
-	token = jwt.sign({
-		id: dummyUser._id,
-		role: 'customer'},
-		process.env.JWT_SECRET,
-		{ expiresIn: '2h'});
-	
-	const dummyWishlistRaw = {
-		_id: '66294265e51dfd7c7d6a8a49',
-		userId: '66294265e51dfd7c7d6a8d94',
-		product: '66294265e51dfd7c7d6a8c45'
-	};
-	const dummyWishlistPopulated = {
-		...dummyWishlistRaw,
-		product:{
-			_id: '66294265e51dfd7c7d6a8c45',
-			name: 'Keyboard Gaming',
-			variants:[{
-				price: 178000
-			}]
-		}
-	};
+	token = await genToken();
 	User.findById = jest.fn().mockResolvedValue(dummyUser);
 	Wishlists.find = jest.fn((filter)=>{
 		if(filter.userId === dummyWishlistRaw.userId){
