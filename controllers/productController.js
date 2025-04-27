@@ -1,11 +1,16 @@
 import Product from "../models/Product.js";
+import {responseFormat} from "../utils/responseHelper.js";
 
 export const addProduct = async (req, res) => {
 	try {
-		const product = await Product.create(req.body);
-		return res.status(201).json({ message: "Product added successfully", product });
+		const productData = req.body
+		const product = await Product.create({
+			...productData,
+			images: req.file.filename
+		});
+		return responseFormat(res, 201, "Product added successfully", product);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		return responseFormat(res, 500, e.message);
 	}
 }
 
@@ -20,8 +25,7 @@ export const getProducts = async (req, res) => {
 			.skip(skip)
 			.limit(limit);
 		const total = await Product.countDocuments();
-		return res.status(200).json({
-			message: "All products retrieved",
+		return responseFormat(res, 200, "All products retrieved", {
 			products,
 			pagination:{
 				total,
@@ -31,8 +35,8 @@ export const getProducts = async (req, res) => {
 			}
 		});
 	} catch (e) {
-		console.error("Error: ", e.message)
-		return res.status(500).json({error: e.message});
+		console.error("[GET PRODUCTS ERROR] ", e.message)
+		return responseFormat(res, 500, e.message);
 	}
 }
 
@@ -50,8 +54,7 @@ export const getProductsByCategory = async (req, res) => {
 			.skip(skip)
 			.limit(limit);
 		
-		return res.status(200).json({
-			message: "Products by category retrieved",
+		return responseFormat(res, 200, "Products by category retrieved", {
 			products: productsByCategory,
 			pagination:{
 				page,
@@ -59,9 +62,10 @@ export const getProductsByCategory = async (req, res) => {
 				total,
 				totalPages: Math.ceil(total / limit)
 			}
-		});
+		})
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.log('[GET PRODUCTS BY CATEGORY ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 }
 
@@ -70,11 +74,11 @@ export const getProductById = async (req, res) => {
 		const {productId} = req.params;
 		const product = await Product.findById(productId).populate('category', 'name');
 		if(!product) {
-			return res.status(404).json({ message: "Product not found" });
+			return responseFormat(res, 404, 'Product not found');
 		}
-		return res.status(200).json({ message: "Product detail retrieved", product });
+		return responseFormat(res, 200, 'Product detail retrieved', product);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		return responseFormat(res, 500, e.message);
 	}
 }
 export const updateProduct = async (req, res) => {
@@ -86,10 +90,10 @@ export const updateProduct = async (req, res) => {
 			{...updateData},
 			{new: true, runValidators: true});
 		
-		return res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
+		return responseFormat(res, 200, 'Product updated successfully', { product: updatedProduct });
 	} catch (e) {
-		console.error("Error: ", e.message);
-		return res.status(500).json({error: e.message});
+		console.error("[UPDATE PRODUCT ERROR] ", e.message);
+		return responseFormat(res, 500, e.message);
 	}
 }
 
@@ -98,10 +102,10 @@ export const deleteProduct = async (req, res) => {
 		const {productId} = req.params;
 		const result = await Product.findByIdAndDelete(productId);
 		if(!result) {
-			return res.status(404).json({ message: "Product not found or already not found" });
+			return responseFormat(res, 404, 'Product not found or already deleted');
 		}
-		return res.status(200).json({ message: "Product deleted successfully" });
+		return responseFormat(res, 200, 'Product deleted successfully', result);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		return responseFormat(res, 500, e.message);
 	}
 }

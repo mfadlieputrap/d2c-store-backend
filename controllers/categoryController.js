@@ -1,4 +1,5 @@
 import Category from "../models/Category.js";
+import {responseFormat} from "../utils/responseHelper.js";
 
 export const addCategory = async (req, res) => {
 	try {
@@ -6,13 +7,13 @@ export const addCategory = async (req, res) => {
 		
 		const existing = await Category.findOne({name});
 		if(existing){
-			return res.status(409).json({ message: 'Category already exists' });
+			return responseFormat(res, 409, "Category already exists");
 		}
 		
 		if(parent){
 			const parentCategory = await Category.findById(parent);
 			if(!parentCategory){
-				return res.status(400).json({ error: "Parent category not found" });
+				return responseFormat(res, 400, "Parent category not found");
 			}
 		}
 		
@@ -21,9 +22,10 @@ export const addCategory = async (req, res) => {
 			parent
 		})
 		
-		return res.status(201).json({ category: newCategory });
+		return responseFormat(res, 201, "Category added successfully", newCategory);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[ADD CATEGORY ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -31,21 +33,42 @@ export const getCategories = async (req, res) => {
 	try {
 		const categories = await Category.find();
 		
-		return res.status(200).json({ message: "List of all category retrieved", categories: categories });
+		return responseFormat(res, 200, "List of categories retrieved", categories);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[GET CATEGORIES ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
+	}
+}
+
+export const updateCategory = async (req, res) => {
+	try{
+		const {categoryId} = req.params;
+		const {name} = req.body;
+		
+		const category = await Category.findByIdAndUpdate(categoryId, {
+			name
+		}, { new: true, runValidators: true});
+		if(!category){
+			return responseFormat(res, 400, "Category not found");
+		}
+		
+		return responseFormat(res, 200, "Category updated successfully", category);
+	}catch(e){
+		console.error('[UPDATE CATEGORY] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 export const deleteCategory = async (req, res) => {
 	try{
-		const {categoryId} = req.params;
-		const category = await Category.findByIdAndDelete(categoryId);
-		if(!category){
-			return res.status(404).json({ message: "Category not found or already deleted" });
+		const categoryId = req.params.id;
+		const result = await Category.findByIdAndDelete(categoryId);
+		if(!result){
+			return responseFormat(res, 404, "Category not found or already deleted");
 		}
-		return res.status(200).json({ message: "Category deleted successfully" });
+		return responseFormat(res, 404, "Category deleted successfully", result);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[DELETE CATEGORY] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }

@@ -1,29 +1,31 @@
 import Order from "../models/Order.js";
 import Payment from "../models/Payment.js";
+import { responseFormat } from '../utils/responseHelper.js';
 
 export const createPayment = async (req, res) => {
 	try{
 		const { orderId, paymentType, transactionStatus, transactionId, paymentResult, paidAt} = req.body;
 		const status = transactionStatus?.toLowerCase();
 		const order = await Order.findById(orderId);
+		console.log(order);
 		if(!order){
-			return res.status(404).json({ message: "Order not found"});
+			return responseFormat(res, 404, "Order not found");
 		}
 		
-		const existingPayment = await Payment.findOne({ orderId });
+		const existingPayment = await Payment.findOne({ order: orderId });
 		if(existingPayment){
-			return res.status(409).json({ message: "Payment already exists for this order" });
+			return responseFormat(res, 409, "Payment already exists for this order");
 		}
 		
 		const payment = await Payment.create({
-			orderId,
+			order: orderId,
 			paymentType,
 			transactionStatus,
 			transactionId,
 			paymentResult,
 			paidAt: status === 'settlement' ? (paidAt || new Date()) : null
 		})
-		
+		console.log(payment);
 		if(transactionStatus === 'settlement'){
 			await Order.findByIdAndUpdate(orderId, {
 				status: 'paid',
@@ -31,34 +33,35 @@ export const createPayment = async (req, res) => {
 			});
 		}
 		
-		return res.status(201).json({ message: "Payment recorded", payment});
+		return responseFormat(res, 201, "Payment recorded", payment);
 	}catch(e){
-		console.error('[CREATE PAYMENT ERROR]', e);
-		return res.status(500).json({ error: e.message });
+		console.error('[CREATE PAYMENT ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 }
 
 export const getPaymentByOrderId = async (req, res) => {
 	try{
 		const {orderId} = req.params;
-		const payment = await Payment.findOne({ orderId });
+		const payment = await Payment.findOne({ order: orderId });
 		if(!payment){
-			return res.status(404).json({ message: "Payment not found"});
+			return responseFormat(res, 404, "Payment not found");
 		}
 		
-		return res.status(200).json({ message: "Payment detail retrieved", payment})
+		return responseFormat(res, 200, "Payment detail retrieved", payment);
 	}catch(e){
-		console.error("Get payment details error: ", e.message);
-		return res.status(500).json({ error: e.message });
+		console.error("[GET PAYMENT DETAILS ERROR] ", e.message);
+		return responseFormat(res, 500, e.message);
 	}
 }
 
 export const getAllPayments = async (req, res) => {
 	try{
-		const payments = await Payment.find().populate('orderId');
-		return res.status(200).json({ message: "List of payments retrieved", payments});
+		const payments = await Payment.find().populate('order');
+		return responseFormat(res, 200, "List of payments retrieved", payments);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[GET ALL PAYMENTS ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 }
 
@@ -68,19 +71,19 @@ export const updatePaymentStatus = async (req, res) => {
 		const { transactionStatus } = req.body;
 		
 		const updatedPayment = await Payment.findOneAndUpdate(
-			{ orderId },
+			{ order: orderId },
 			{ transactionStatus },
 			{ new: true }
 		);
 		
 		if (!updatedPayment) {
-			return res.status(404).json({ message: "Payment not found" });
+			return responseFormat(res, 404, "Payment not found");
 		}
 		
-		return res.status(200).json({ message: "Payment updated", updatedPayment });
+		return responseFormat(res, 200, "Payment updated", updatedPayment);
 	} catch (e) {
-		console.error('[UPDATE PAYMENT ERROR]', e);
-		return res.status(500).json({ error: e.message });
+		console.error('[UPDATE PAYMENT ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 };
 
@@ -91,7 +94,7 @@ export const handleMidtransCallback = async (req, res) => {
 		const orderId = order_id.split('-')[0]; // misal "6533bc-...-timestamp"
 		
 		const payment = await Payment.findOneAndUpdate(
-			{ orderId },
+			{ order: orderId },
 			{
 				transactionStatus: transaction_status,
 				transactionId: transaction_id,
@@ -107,25 +110,25 @@ export const handleMidtransCallback = async (req, res) => {
 			});
 		}
 		
-		return res.status(200).json({ message: "Callback received" });
+		return responseFormat(res, 200, "Callback received", payment);
 	} catch (e) {
-		console.error('[MIDTRANS CALLBACK ERROR]', e);
-		return res.status(500).json({ error: e.message });
+		console.error('[MIDTRANS CALLBACK ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 };
 
 export const deletePayment = async (req, res) => {
 	try {
 		const { orderId } = req.params;
-		const deletedPayment = await Payment.findOneAndDelete({ orderId });
-		
+		const deletedPayment = await Payment.findOneAndDelete({ order: orderId });
+		console.log(deletedPayment);
 		if (!deletedPayment) {
-			return res.status(404).json({ message: "Payment not found" });
+			return responseFormat(res, 404, "Payment not found");
 		}
 		
-		return res.status(200).json({ message: "Payment deleted successfully" });
+		return responseFormat(res, 200, "Payment deleted successfully");
 	} catch (e) {
-		console.error('[DELETE PAYMENT ERROR]', e);
-		return res.status(500).json({ error: e.message });
+		console.error('[DELETE PAYMENT ERROR] ', e.message);
+		return responseFormat(res, 500, e.message);
 	}
 };

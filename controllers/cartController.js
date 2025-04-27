@@ -1,47 +1,50 @@
 import Cart from "../models/Cart.js";
 import checkStock from "../utils/checkStock.js";
+import {responseFormat} from "../utils/responseHelper.js";
 
 export const getCartByUserId = async (req, res) => {
 	try {
 		const userId = req.user.id;
-		const cartItems = await Cart.find({userId}).sort({ createdAt: -1 }).populate('productId', 'name defaultPrice variants').lean();
+		const cartItems = await Cart.find({userId}).sort({ createdAt: -1 }).populate('product', 'name  variants').lean();
 		
 		const updatedCartItems = cartItems.map(item => {
-			const product = item.productId;
+			const product = item.product;
 			const variant = product.variants.find(v => v.color === item.variant.color && v.size === item.variant.size);
-			item.price = variant ? variant.price : product.defaultPrice;
+			item.price = variant.price;
 			return item;
 		})
 		
-		return res.status(200).json({ message: "Cart items retrieved", cartItems: updatedCartItems });
+		return responseFormat(res, 200, "Cart items retrieved", updatedCartItems);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[GET CART BY USER ID ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 export const addProductToCart = async (req, res) => {
 	try {
-		const { productId, variant, quantity } = req.body;
+		const { product, variant, quantity } = req.body;
 		if(quantity <=0){
-			return res.status(400).json({ message: "Quantity must be greater than 0" });
+			return responseFormat(res, 400, "Quantity must be greater than 0");
 		}
-		await checkStock(productId, variant, quantity);
+		await checkStock(product, variant, quantity);
 		
-		const existing = await Cart.findOne({userId: req.user.id, productId, "variant.color": variant.color, "variant.size": variant.size});
+		const existing = await Cart.findOne({userId: req.user.id, product, "variant.color": variant.color, "variant.size": variant.size});
 		if(existing){
 			existing.quantity += quantity;
 			await existing.save();
-			return res.status(200).json({ message: "Cart item updated successfully", item: existing});
+			return responseFormat(res, 200, "Cart item updated succesfully", existing);
 		}
 		
 		const newItem = await Cart.create({
 			userId: req.user.id,
-			productId,
+			product,
 			variant,
 			quantity
 		})
-		return res.status(201).json({ message: "Add items to cart successfully", item: newItem});
+		return responseFormat(res, 201, "Add items to cart successfully", newItem);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[ADD PRODUCT TO CART ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -51,11 +54,12 @@ export const deleteProductFromCart = async (req, res) => {
 		
 		const result = await Cart.findOneAndDelete({_id: cartItemId, userId: req.user.id});
 		if(!result){
-			return res.status(404).json({ message: "Cart item not found or already deleted"});
+			return responseFormat(res, 404, "Cart item not found or already deleted");
 		}
-		return res.status(200).json({ message: "Cart item deleted successfully"});
+		return responseFormat(res, 200, "Cart item deleted successfully", result);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[DELETE PRODUCT FROM CART ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -66,20 +70,22 @@ export const updateQuantity = async (req, res) => {
 	
 	const cartItem = await Cart.findById(cartItemId);
 	if(!cartItem){
-		return res.status(404).json({ message: "Cart item not found" });
+		return responseFormat(res, 404, "Cart item not found");
 	}
 	if(cartItem.userId.toString() !== req.user.id){
-		return res.status(403).json({ message: "You do not have permission to update cart item" });
+		return responseFormat(res, 403, "You do not have permission to update cart item");
 	}
 	if(newQuantity <=0){
-		return res.status(400).json({ message: "Quantity must be greater than 0" });
+		return responseFormat(res, 400, "Quantity must be greater than 0");
 	}
 	cartItem.quantity = newQuantity;
 	await cartItem.save();
 	
-	return res.status(200).json({ message: "Change quantity successfully", cartItem});
+	return responseFormat(res, 200, "Change quantity successfully");
+	
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[UPDATE QUANTITY ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -87,10 +93,11 @@ export const deleteAllCartItem = async (req, res) => {
 	try{
 		const result = await Cart.deleteMany({userId: req.user.id});
 		if(result.deletedCount === 0){
-			return res.status(404).json({ message: "Cart item not found or already exists" });
+			return responseFormat(res, 404, "Cart item not found or already deleted");
 		}
-		return res.status(200).json({ message: `${result.deletedCount} Item(s) in cart deleted successfully` });
+		return responseFormat(res, 200, `${result.deletedCount} Item(s) in cart deleted successfully`);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[DELETE ALL CART ITEM ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }

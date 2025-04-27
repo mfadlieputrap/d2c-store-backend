@@ -3,13 +3,14 @@ import User from '../models/User.js';
 import generateToken from "../utils/generateToken.js";
 import hashPassword from "../utils/hashPassword.js";
 import comparePassword from "../utils/comparePassword.js";
+import {responseFormat} from "../utils/responseHelper.js";
 
 export const registerUser = async (req, res) => {
 	const { username, email, password } = req.body;
 	try {
 		const existingUser = await User.findOne({$or: [{email}, {username}]});
 		if(existingUser) {
-			return res.status(400).json({ message: "Email or Username already in use" });
+			return responseFormat(res, 400, "Email or Username already in use");
 		}
 		
 		const hashedPassword = await hashPassword(password);
@@ -20,9 +21,10 @@ export const registerUser = async (req, res) => {
 			password: hashedPassword,
 		})
 		
-		return res.status(201).json({ message: "User registered successfully" });
+		return responseFormat(res, 201, "User registered successfully");
 	} catch (e) {
-		return res.status(500).json({ errors: e.message});
+		console.error('[REGISTER ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -30,20 +32,21 @@ export const loginUser = async (req, res)=>{
 
 	const { email, password } = req.body;
 	try {
-	  const existingUser = await User.findOne({email});
+	  const existingUser = await User.findOne({email}).select("+password");
 		if(!existingUser){
-			return res.status(404).json({ message: "User does not exist" });
+			return responseFormat(res, 404, "User doesn't exists");
 		}
-		
+		console.log(password, existingUser.password);
 		const isPasswordValid = await comparePassword(password, existingUser.password);
 		if(!isPasswordValid){
-			return res.status(400).json({ message: "Invalid Password" });
+			return responseFormat(res, 400, "Invalid password");
 		}
 		
 		const token = generateToken(existingUser);
 		
-		return res.status(200).json({ message: "User login successfully", token });
+		return responseFormat(res, 200, "user login successfully", token);
 	} catch (e) {
-		return res.status(500).json({ error: e.message });
+		console.error('[LOGIN ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }

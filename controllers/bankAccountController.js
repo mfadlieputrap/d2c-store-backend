@@ -1,50 +1,41 @@
 import checkUserExists from "../utils/checkUserExists.js";
 import BankAccount from "../models/BankAccount.js";
 import applyUpdateFields from "../utils/applyUpdateFields.js";
+import {responseFormat} from "../utils/responseHelper.js";
 const allowedFields = ["type", "provider", "accountName", "accountNumber"];
 
 export const getAllBankAccount = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
-		
 		const bankAccounts = await BankAccount.find({userId: req.user.id});
 		
-		return res.status(200).json({
-			message: "Bank accounts user retrieved",
-			bankAccounts
-		})
+		return responseFormat(res, 200, "Bank accounts user retrieved", bankAccounts);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[GET BANK ACCOUNTS ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 export const getBankAccountById = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const {bankAccountId} = req.params;
 		const bankAccount = await BankAccount.findOne({_id: bankAccountId, userId: req.user.id});
+		console.log(req.params);
 		if(!bankAccount){
-			return res.status(404).json({
-				message: "Bank account not found"
-			})
+			return responseFormat(res, 404, "Bank account not found");
 		}
 		
-		return res.status(200).json({
-			message: "Bank account detail retrieved",
-			bankAccount
-		})
+		return responseFormat(res, 200, "Bank account detail retrieved", bankAccount);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[GET BANK ACCOUNT BY ID ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 export const addBankAccount = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const {type, provider, accountName, accountNumber} = req.body;
+		console.log(!type, !provider, !accountName, !accountNumber)
 		if(!type || !provider || !accountName || !accountNumber){
-			return res.status(400).json({
-				message: "All fields are required"
-			})
+			return responseFormat(res, 400, "All field are required");
 		}
 		const bankAccount = await BankAccount.create({
 			userId: req.user.id,
@@ -53,52 +44,45 @@ export const addBankAccount = async (req, res) => {
 			accountName,
 			accountNumber
 		})
-		return res.status(201).json({
-			message: "Bank account added successfully",
-			bankAccount
-		})
+		return responseFormat(res, 201, "Bank account added successfully", bankAccount);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[ADD BANK ACCOUNT ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 
 export const updateBankAccount = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const {bankAccountId} = req.params;
 		const updateData = req.body;
 		
 		const prevBankAccount = await BankAccount.findOne({_id: bankAccountId, userId: req.user.id});
 		if(!prevBankAccount){
-			return res.status(404).json({
-				message: "Bank account not found"
-			})
+			return responseFormat(res, 404, "Bank account not found");
 		}
 		
-		const updatedBankAccount = applyUpdateFields(prevBankAccount, updateData, allowedFields);
-		await updatedBankAccount.save();
+		const bankAccount = applyUpdateFields(prevBankAccount, updateData, allowedFields);
+		await bankAccount.save();
 		
-		return res.status(200).json({
-			message: "Bank account updated successfully",
-			updatedBankAccount
-		})
+		return responseFormat(res, 200, "Bank account updated succeessfully", bankAccount);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[UPDATE BANK ACCOUNT ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 export const deleteBankAccount = async (req, res) => {
 	try {
-		await checkUserExists(req.user.id);
 		const {bankAccountId} = req.params;
 		
 		const result = await BankAccount.findOneAndDelete({_id: bankAccountId, userId: req.user.id});
 		if(!result){
-			return res.status(404).json({ message: "Bank account not found or already deleted" });
+			return responseFormat(res, 404, "Bank account not found or already deleted");
 		}
 		
-		return res.status(200).json({ message: "Bank account deleted successfully", result });
+		return responseFormat(res, 200, "Bank account deleted successfully", result);
 	} catch (e) {
-		return res.status(500).json({error: e.message});
+		console.error('[DELETE BANK ACCOUNT ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }

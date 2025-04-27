@@ -1,48 +1,49 @@
 import checkUserExists from "../utils/checkUserExists.js";
 import Address from "../models/Address.js";
 import applyUpdateFields from "../utils/applyUpdateFields.js";
+import {responseFormat} from "../utils/responseHelper.js";
 const allowFields = ["label", "recipientName", "street", "city", "province", "postalCode", "phoneNumber"]
 
 export const getAllAddress = async (req, res) => {
 	try{
-		await checkUserExists(req.user.id);
 		const addresses = await Address.find({userId: req.user.id}).lean();
 		
-		return res.status(200).json({ message: "List of address retrieved" , addresses});
+		return responseFormat(res, 200, "List of user address retrieved", addresses);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[GET ADDRESSES ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 export const getAddressById = async (req, res) => {
 	try {
 	  const {addressId} = req.params;
-		await checkUserExists(req.user.id);
 		
 		const address = await Address.findOne({_id: addressId, userId: req.user.id}).lean();
 		if(!address){
-			return res.status(404).json({ message: "Address not found" });
+			return responseFormat(res, 404, "Address not found");
 		}
 		
-		return res.status(200).json({ message: "Address detail retrieved", address });
+		return responseFormat(res, 200, "User address detail retrieved", address);
 	} catch (e) {
-		return res.status(500).json({ error: e.message });
+		console.error('[GET ADDRESS BY ID ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 export const addAddress = async (req, res) => {
 	try{
 		const data = req.body;
-		await checkUserExists(req.user.id);
 		
 		const address = await Address.create({
 			userId: req.user.id,
 			...data
 		});
 		
-		return res.status(201).json({ message: "Address added successfully", address });
+		return responseFormat(res, 201, "User added address successfully", address);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[ADD ADDRESS ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
@@ -50,34 +51,35 @@ export const updateAddress = async (req, res) => {
 	try{
 		const updateData = req.body;
 		const { addressId } = req.params;
-		await checkUserExists(req.user.id);
 		
-		const prevAddress = await Address.findOne({_id: addressId, userId: req.user.id});
-		if(!prevAddress){
-			return res.status(404).json({ message: "Address not found" });
+		const updatedAddress = applyUpdateFields({}, updateData, allowFields);
+		const address = await Address.findOneAndUpdate({_id: addressId, userId: req.user.id}, {
+			$set: updatedAddress
+		}, { new: true, runValidators: true});
+		if(!address){
+			return responseFormat(res, 404, "User address not found");
+		
 		}
 		
-		const updatedAddress = applyUpdateFields(prevAddress, updateData, allowFields);
-		await updatedAddress.save();
-		
-		return res.status(200).json({ message: "Address updated successfully", updatedAddress });
+		return responseFormat(res, 200, "User address updated successfully", updatedAddress);
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[UPDATE ADDRESS ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
 
 export const deleteAddress = async (req, res) => {
 	try{
 		const { addressId } = req.params;
-		await checkUserExists(req.user.id);
 		
 		const result = await Address.findOneAndDelete({_id: addressId, userId: req.user.id});
 		if(!result){
-			return res.status(404).json({ message: "Address not found or already deleted" });
+			return responseFormat(res, 404, "Address not found or already deleted");
 		}
 		
-		return res.status(200).json({ message: "Address deleted successfully" });
+		return responseFormat(res, 200, "User address deleted successfully");
 	}catch(e){
-		return res.status(500).json({ error: e.message });
+		console.error('[DELETE ADDRESS ERROR] ', e.message);
+		return responseFormat(res, 500, error.message);
 	}
 }
