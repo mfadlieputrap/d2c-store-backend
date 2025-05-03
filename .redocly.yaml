@@ -1,0 +1,16 @@
+apis:
+  main:
+    root: docs/openapi.yaml
+
+extends:
+  - recommended
+
+rules:
+  no-unused-components: off
+  operation-description: warn
+  operation-operationId: warn
+  info-contact: warn
+  tag-description: warn
+  no-identical-paths: error
+  no-ambiguous-paths: warn
+
