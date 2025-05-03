@@ -8,7 +8,6 @@ import {
 	updateQuantity
 } from "../controllers/cartController.js";
 import {cartValidation, updateQuantityValidation} from "../validators/entityValidator.js";
-import checkUserExists from "../utils/checkUserExists.js";
 const router = express.Router();
 
 router.post('/add',...cartValidation, handleValidator, addProductToCart);

@@ -15,6 +15,6 @@ router.post('/add', ...addressValidation, handleValidator, addAddress);
 router.put('/update/:addressId', updateAddress);
 router.delete('/delete/:addressId', deleteAddress);
 router.get('/', getAllAddress);
-router.get('/:id', getAddressById);
+router.get('/:addressId', getAddressById);
 
 export default router;

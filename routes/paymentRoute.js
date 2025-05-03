@@ -7,11 +7,6 @@ import {
 	handleMidtransCallback, deletePayment
 } from '../controllers/paymentController.js';
 
-import {
-	createPaymentValidation,
-	getPaymentByOrderIdValidation,
-	updatePaymentStatusValidation
-} from '../validators/entityValidator.js';
 
 import handleValidator from '../middleware/handleValidator.js';
 import { authJwt, allowRoles } from '../middleware/authMiddleware.js';

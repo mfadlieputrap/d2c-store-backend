@@ -13,7 +13,7 @@ import paymentRoute from "./paymentRoute.js";
 import categoryRoute from "./categoryRoute.js";
 const router = express.Router();
 
-router.use('/user', authJwt, checkUserExists, allowRoles(['customer']), userRoute);
+router.use('/users', authJwt, checkUserExists, allowRoles(['customer']), userRoute);
 router.use('/products', productRoute);
 router.use('/wishlists', authJwt, checkUserExists, allowRoles(['customer']), wishlistRoute);
 router.use('/auth', authRoute);
