@@ -27,7 +27,6 @@ export const updateUserValidation = [
 ]
 
 export const addressValidation = [
-	mongoIdValidator('userId'),
 	body('label')
 		.notEmpty().withMessage('Please enter a label')
 		.isLength({min:4}),
@@ -49,23 +48,25 @@ export const addressValidation = [
 		.matches(/^\+?\d+$/).withMessage("Phone number must be numeric, optionally starting with '+'")
 ]
 
-export const bankAccountValidation = [
-	mongoIdValidator('userId'),
+export const bankAccountValidation = (isUpdate = false) => [
 	body('type')
+		.if(()=> !isUpdate)
 		.notEmpty().withMessage('Please enter a type')
 		.isIn(["bank", "e-wallet"]).withMessage('Type must be either "bank" or "e-wallet"'),
 	body('provider')
+		.if(()=> !isUpdate)
 		.notEmpty().withMessage('Please enter a provider'),
 	body('accountName')
+		.if(()=> !isUpdate)
 		.notEmpty().withMessage('Please enter an account name'),
 	body('accountNumber')
+		.if(()=> !isUpdate)
 		.notEmpty().withMessage('Please enter an account number')
 		.isLength({min:10})
 ]
 
 export const cartValidation = [
-	mongoIdValidator('userId'),
-	body('productId')
+	body('product')
 		.notEmpty().withMessage('Product id is required')
 		.custom((value)=> mongoose.Types.ObjectId.isValid(value))
 		.withMessage('Invalid Product ID format'),
@@ -83,7 +84,7 @@ export const cartValidation = [
 ]
 
 export const updateQuantityValidation = [
-	body('quantity')
+	body('newQuantity')
 		.notEmpty().withMessage('Quantity is required')
 		.isInt({ min:1}).withMessage('Quantity must be a positive integer')
 ]
@@ -115,27 +116,32 @@ export const productValidation = (isUpdate = false) => [
 		.matches(/\.(jpg|jpeg|png|webp)$/i).withMessage('Image must be jpg, jpeg, png, or webp'),
 	
 	body('variants')
-		.if((value, { req }) => !isUpdate || req.body.variants)
+		.if(()=> !isUpdate)
+		// .if((value, { req }) => !isUpdate || req.body.variants)
 		.isArray({ min: 1 }).withMessage('Variants must be a non-empty array')
 		.optional({ checkFalsy: true }),
 	
 	body('variants.*.price')
-		.if((value, { req }) => !isUpdate || req.body.variants)
+		.if(()=> !isUpdate)
+		// .if((value, { req }) => !isUpdate || req.body.variants)
 		.isFloat({ gt: 0 }).withMessage('Each variant price must be greater than 0')
 		.optional({ checkFalsy: true }),
 	
 	body('variants.*.stock')
-		.if((value, { req }) => !isUpdate || req.body.variants)
+		.if(()=> !isUpdate)
+		// .if((value, { req }) => !isUpdate || req.body.variants)
 		.isInt({ gt: 0 }).withMessage('Each variant stock must be greater than 0')
 		.optional({ checkFalsy: true }),
 	
 	body('variants.*.color')
-		.if((value, { req }) => !isUpdate || req.body.variants)
-		.notEmpty().withMessage('Color is required in variants')
-		.optional({ checkFalsy: true }),
+		.optional({ checkFalsy: true })
+		// .if((value, { req }) => !isUpdate || req.body.variants)
+		.notEmpty().withMessage('Color is required in variants'),
+		
 	
 	body('variants.*.size')
-		.if((value, { req }) => !isUpdate || req.body.variants)
+		.if(()=> !isUpdate)
+		// .if((value, { req }) => !isUpdate || req.body.variants)
 		.notEmpty().withMessage('Size is required in variants')
 		.optional({ checkFalsy: true }),
 ];
@@ -148,7 +154,7 @@ export const categoryValidation = (isUpdate = false) => [
 	
 	body('parent')
 		.optional({ checkFalsy: true })
-		.custom((val) => mongoose.Types.ObjectId.isValid(val)).withMessage(`${field} is not a valid MongoDB ObjectId`)
+		.custom((val) => mongoose.Types.ObjectId.isValid(val)).withMessage(`parent is not a valid MongoDB ObjectId`)
 ]
 
 export const createPaymentValidation = [
