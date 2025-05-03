@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "nodemon ./app.js",
-    "bundle": "npx redocly bundle docs/openapi.yaml -o docs/openapi.yaml",
+    "dev": "nodemon ./server.js",
+    "bundle": "npx redocly bundle main -o build/openapi.yaml --dereferenced=false",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles"
   },
   "keywords": [],
