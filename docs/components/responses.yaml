@@ -1,156 +1,597 @@
-components:
-  responses:
-    AuthSuccess:
-      description: Register success
-      content:
-        application/json:
-          schema:
-            $ref: '../components/schemas.yaml#/components/schemas/AuthResponse'
+RegisterSuccess:
+  description: Register success
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/RegisterResponse'
 
-    LoginSuccess:
-      description: Login success
-      content:
-        application/json:
-          schema:
-            $ref: '../components/schemas.yaml#/components/schemas/LoginResponse'
+LoginSuccess:
+  description: Login success
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/LoginResponse'
 
-    GetProfileSuccess:
-      description: Success get data information profile user
-      content:
-        application/json:
-          schema:
-            $ref: '../components/schemas.yaml#/components/schemas/User'
-          examples:
-            success:
-              $ref: '../components/examples.yaml#/components/examples/GetUserProfileExample'
+UpdateUserSuccess:
+  description: Successfully updated user
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/UpdateUserResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateUserExample'
 
+GetProfileSuccess:
+  description: Successfully retrieved user profile
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetProfileResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetProfileExample'
 
-    UserDeletedSuccess:
-      description: User deleted response
-      content:
-        application/json:
-          schema:
+DeleteProfileSuccess:
+  description: Successfully deleted user profile
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteProfileResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteProfileExample'
+ChangePasswordSuccess:
+  description: Successfully changed user password
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/ChangePasswordResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/ChangePasswordExample'
+
+AddAddressSuccess:
+  description: Add user address successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/AddAddressResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/AddAddressSuccessExample'
+
+GetAllAddressSuccess:
+  description: List of user addresses successfully retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetAllAddressResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetAllAddressSuccessExample'
+
+UpdateAddressSuccess:
+  description: List of user addresses successfully retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/UpdateAddressResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateAddressSuccessExample'
+
+DeleteAddressSuccess:
+  description: List of user addresses successfully retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteAddressResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteAddressSuccessExample'
+
+GetAddressByIdSuccess:
+  description: List of user addresses successfully retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetAddressByIdResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetAddressByIdSuccessExample'
+
+Ok:
+  description: Successful response
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Request successful"
+
+Created:
+  description: Resource created successfully
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Resource created successfully
+          data:
+            type: object
+            example: {}
+
+NoContent:
+  description: Resource deleted successfully (No Content)
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Resource deleted successfully
+
+BadRequest:
+  description: Invalid input or missing parameters
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            example: Invalid input data
+
+Unauthorized:
+  description: Missing or invalid authentication token
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            example: Invalid or missing token
+
+Forbidden:
+  description: Access denied due to insufficient permissions
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Forbidden: You are not allowed to perform this action"
+
+NotFound:
+  description: The requested resource was not found
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Resource not found
+
+Conflict:
+  description: Resource already exists
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Email already exists
+
+InternalServerError:
+  description: Something went wrong on the server
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          error:
+            type: string
+            example: Internal server error
+
+AddProductSuccess:
+  description: Product successfully added
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Product'
+      examples:
+        addProductExample:
+          $ref: './examples.yaml#/AddProductExample'
+
+GetProductsSuccess:
+  description: All products retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/ProductPagination'
+      examples:
+        getProductsExample:
+          $ref: './examples.yaml#/GetProductsExample'
+
+GetProductsByCategorySuccess:
+  description: Products by category retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/ProductPagination'
+      examples:
+        getProductsByCategoryExample:
+          $ref: './examples.yaml#/GetProductsByCategoryExample'
+
+GetProductByIdSuccess:
+  description: Product detail retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Product'
+      examples:
+        getProductByIdExample:
+          $ref: './examples.yaml#/GetProductByIdExample'
+
+UpdateProductSuccess:
+  description: Product updated successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Product'
+      examples:
+        updateProductExample:
+          $ref: './examples.yaml#/UpdateProductExample'
+
+DeleteProductSuccess:
+  description: Product deleted successfully
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+            example: Product deleted successfully
+          data:
+            type: object
+            example: { }
+
+GetWishlistsSuccess:
+  description: Wishlists data retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetWishlistsResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetWishlistsSuccessExample'
+
+AddWishlistSuccess:
+  description: Add product to wishlist successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/AddWishlistResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/AddWishlistSuccessExample'
+
+DeleteWishlistSuccess:
+  description: Delete product from wishlist successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteWishlistResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteWishlistSuccessExample'
+
+GetCategoriesSuccess:
+  description: Get list of categories
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetCategoriesSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetCategoriesSuccessExample'
+
+AddCategorySuccess:
+  description: Add category
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/OneCategorySuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/AddCategorySuccessExample'
+
+UpdateCategorySuccess:
+  description: Update category
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/OneCategorySuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateCategorySuccessExample'
+
+DeleteCategorySuccess:
+  description: Delete category
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteCategorySuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteCategorySuccessExample'
+
+AddBankAccountSuccess:
+  description: Add bank account
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/AddBankAccountSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/AddBankAccountSuccessExample'
+
+GetBankAccountSuccess:
+  description: Get list of categories
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetBankAccountSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetBankAccountSuccessExample'
+
+GetBankAccountByIdSuccess:
+  description: Get bank account by id
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetBankAccountByIdSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetBankAccountByIdSuccessExample'
+
+UpdateBankAccountSuccess:
+  description: Update bank account
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/UpdateBankAccountSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateBankAccountSuccessExample'
+
+DeleteBankAccountSuccess:
+  description: Delete bank account
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteBankAccountSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteBankAccountSuccessExample'
+
+AddCartSuccess:
+  description: Add product to cart
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/AddCartSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/AddCartSuccessExample'
+
+GetCartsSuccess:
+  description: Get list of carts
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/GetCartsSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetCartsSuccessExample'
+
+UpdateQuantitySuccess:
+  description: Update quantity
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/UpdateQuantitySuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateQuantitySuccessExample'
+
+DeleteProductFromCartSuccess:
+  description: Delete product from cart
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteProductFromCartSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteProductFromCartSuccessExample'
+
+DeleteAllProductFromCartSuccess:
+  description: Delete product from cart
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/DeleteAllProductFromCartSuccessResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/DeleteAllProductFromCartSuccessExample'
+
+CreateOrderSuccess:
+  description: Order created successfully
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "success"
+          message:
+            type: string
+            example: "Order created"
+          data:
             type: object
             properties:
-              message:
+              order:
+                $ref: './schemas.yaml#/OrderResponse'
+              snapToken:
                 type: string
-                example: User deleted successfully
+                example: "e88f2e18-02ba-4e48-85ef-8b3de660e6e6"
+      examples:
+        success:
+          $ref: './examples.yaml#/CreateOrderSuccessExample'
 
-    UserUpdateSuccess:
-      description: User success update data
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: User updated successfully
-              data:
-                type: object
-          examples:
-            success:
-              $ref: '../components/examples.yaml#/components/examples/UserUpdateSuccessExample'
+GetOrdersSuccess:
+  description: Successfully retrieved list of orders
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "success"
+          message:
+            type: string
+            example: "List of orders retrieved"
+          data:
+            type: array
+            items:
+              $ref: './schemas.yaml#/OrderResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetOrdersSuccessExample'
 
-    Ok:
-      description: Successful response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: "Request successful"
+GetOrderByIdSuccess:
+  description: Successfully retrieved specific order
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "success"
+          message:
+            type: string
+            example: "Order detail retrieved"
+          data:
+            $ref: './schemas.yaml#/OrderResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetOrderByIdSuccessExample'
 
-    Created:
-      description: Resource created successfully
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource created successfully
-              data:
-                type: object
-                example: {}
+UpdateOrderStatusSuccess:
+  description: Successfully updated order status
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "success"
+          message:
+            type: string
+            example: "Order status updated"
+          data:
+            $ref: './schemas.yaml#/OrderResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/UpdateOrderStatusSuccessExample'
 
-    NoContent:
-      description: Resource deleted successfully (No Content)
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource deleted successfully
+CancelOrderSuccess:
+  description: Order cancelled successfully
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          status:
+            type: string
+            example: "success"
+          message:
+            type: string
+            example: "Order cancelled successfully"
+          data:
+            $ref: './schemas.yaml#/OrderResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/CancelOrderSuccessExample'
 
-    BadRequest:
-      description: Invalid input or missing parameters
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Invalid input data
 
-    Unauthorized:
-      description: Missing or invalid authentication token
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Invalid or missing token
+PaymentCreatedSuccess:
+  description: Payment created successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Payment'
+      examples:
+        success:
+          $ref: './examples.yaml#/PaymentSuccessExample'
 
-    Forbidden:
-      description: Access denied due to insufficient permissions
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: "Forbidden: You are not allowed to perform this action"
+PaymentRetrievedSuccess:
+  description: Payment detail retrieved
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Payment'
+      examples:
+        success:
+          $ref: './examples.yaml#/PaymentSuccessExample'
 
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource not found
+AllPaymentsRetrievedSuccess:
+  description: All payments retrieved successfully
+  content:
+    application/json:
+      schema:
+        type: array
+        items:
+          $ref: './schemas.yaml#/GetAllPaymentsResponse'
+      examples:
+        success:
+          $ref: './examples.yaml#/GetAllPaymentSuccessExample'
 
-    Conflict:
-      description: Resource already exists
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Email already exists
+PaymentUpdatedSuccess:
+  description: Payment updated successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Payment'
+      examples:
+        success:
+          $ref: './examples.yaml#/PaymentSuccessExample'
 
-    InternalServerError:
-      description: Something went wrong on the server
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-                example: Internal server error
+PaymentDeletedSuccess:
+  description: Payment deleted successfully
 
+CallbackHandledSuccess:
+  description: Midtrans callback handled successfully
+  content:
+    application/json:
+      schema:
+        $ref: './schemas.yaml#/Payment'
+      examples:
+        success:
+          $ref: './examples.yaml#/PaymentSuccessExample'

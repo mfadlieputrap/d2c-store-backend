@@ -1,42 +1,41 @@
-paths:
-  /auth/register:
-    post:
-      tags:
-        - Auth
-      summary: Register a new user
-      operationId: register
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas.yaml#/components/schemas/AuthRequestRegister"
-      responses:
-        200:
-          $ref: "../components/responses.yaml#/components/responses/AuthSuccess"
-        400:
-          $ref: "../components/responses.yaml#/components/responses/BadRequest"
-        500:
-          $ref: "../components/responses.yaml#/components/responses/InternalServerError"
+/auth/register:
+  post:
+    tags:
+      - Auth
+    summary: Register a new user
+    operationId: register
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas.yaml#/AuthRequestRegister"
+    responses:
+      200:
+        $ref: "../components/responses.yaml#/RegisterSuccess"
+      400:
+        $ref: "../components/responses.yaml#/BadRequest"
+      500:
+        $ref: "../components/responses.yaml#/InternalServerError"
 
-  /auth/login:
-    post:
-      tags:
-        - Auth
-      summary: Login user
-      operationId: login
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas.yaml#/components/schemas/AuthRequestLogin"
-      responses:
-        200:
-          $ref: "../components/responses.yaml#/components/responses/LoginSuccess"
-        400:
-          $ref: "../components/responses.yaml#/components/responses/BadRequest"
-        500:
-          $ref: "../components/responses.yaml#/components/responses/InternalServerError"
+/auth/login:
+  post:
+    tags:
+      - Auth
+    summary: Login user
+    operationId: login
+    security: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas.yaml#/AuthRequestLogin"
+    responses:
+      200:
+        $ref: "../components/responses.yaml#/LoginSuccess"
+      400:
+        $ref: "../components/responses.yaml#/BadRequest"
+      500:
+        $ref: "../components/responses.yaml#/InternalServerError"

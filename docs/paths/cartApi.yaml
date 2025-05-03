@@ -1,0 +1,113 @@
+/carts/add:
+  post:
+    tags:
+      - Cart
+    summary: Add product to cart
+    operationId: addProductToCart
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '../components/schemas.yaml#/AddCartRequest'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/AddCartSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/carts:
+  get:
+    tags:
+      - Cart
+    summary: Get all cart
+    operationId: getCarts
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetCartsSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/carts/quantity/{cartItemId}:
+  put:
+    tags:
+      - Cart
+    summary: Update cart
+    operationId: updateQuantity
+    parameters:
+      - in: path
+        name: cartItemId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              newQuantity:
+                type: Integer
+                example: 3
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateQuantitySuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/carts/delete/{cartItemId}:
+  delete:
+    tags:
+      - Cart
+    summary: Delete cart item
+    operationId: deleteProductFromCart
+    parameters:
+      - in: path
+        name: cartItemId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteProductFromCartSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/carts/delete:
+  delete:
+    tags:
+      - Cart
+    summary: Delete all product from cart
+    operationId: deleteAllProductFromCart
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteAllProductFromCartSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

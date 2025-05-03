@@ -1,0 +1,65 @@
+/wishlists:
+  get:
+    tags:
+      - Wishlist
+    summary: Get wishlist user
+    operationId: getWishlistByUserId
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetWishlistsSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/wishlists/add:
+  post:
+    tags:
+      - Wishlist
+    summary: Add product to wishlist
+    operationId: addProductToWishlist
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/AddWishlistRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/AddWishlistSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/wishlists/delete/{wishlistId}:
+  delete:
+    tags:
+      - Wishlist
+    summary: Delete product from wishlist
+    operationId: deleteProductFromWishlist
+    parameters:
+      - in: path
+        name: wishlistId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteWishlistSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

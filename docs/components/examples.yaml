@@ -1,21 +1,633 @@
-components:
-  examples:
-    UserUpdateSuccessExample:
-      description: Example of user update success response
-      value:
-        message: User update successfully
-        data:
-          _id: 60c6d7ac8b7d56ab6cb7a
-          username: johndoeUpdated
-          email: johndoe@example.com
-          phone: "081234567890"
+UpdateUserExample:
+  summary: Example of updated user
+  value:
+    message: "User updated successfully"
+    data:
+      user:
+        _id: "6630aa88a07cd61db3f6fabc"
+        username: "updateduser"
+        email: "updated@example.com"
+        phone: "+6281234567890"
+        createdAt: "2024-04-01T10:00:00.000Z"
+        updatedAt: "2025-04-28T12:00:00.000Z"
 
-    GetUserProfileExample:
-      description: Example of get profile user success response
-      value:
-        message: Get profile successfully
-        data:
-          _id: 60c6d7ac8b7d56ab6cb7a
-          username: johndoe
-          email: johndoe@example.com
-          phone: "081234567890"
+GetProfileExample:
+  summary: Example of retrieved user profile
+  value:
+    message: "User profile retrieved"
+    data:
+      _id: "6630aa88a07cd61db3f6fabc"
+      username: "sampleuser"
+      email: "user@example.com"
+      phone: "+6281234567890"
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T10:00:00.000Z"
+
+DeleteProfileExample:
+  summary: Example of deleted profile
+  value:
+    message: "Profile deleted successfully"
+    data:
+      _id: "6630aa88a07cd61db3f6fabc"
+      username: "deleteduser"
+      email: "deleted@example.com"
+      phone: "+6281234567890"
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T10:00:00.000Z"
+
+ChangePasswordExample:
+  summary: Example of successful password change
+  value:
+    message: "Change password successfully"
+
+AddProductExample:
+  summary: Example of successfully added product
+  value:
+    status: success
+    message: Product added successfully
+    data:
+      _id: "6641a8f3e48c2f001c5e99aa"
+      name: "T-shirt White Basic"
+      price: 199000
+      stock: 100
+      description: "High quality cotton T-shirt"
+      images: "product-image.jpg"
+      category: "6641a7dbe48c2f001c5e99a0"
+      createdAt: "2025-04-28T10:00:00Z"
+      updatedAt: "2025-04-28T10:00:00Z"
+
+GetProductsExample:
+  summary: Example list all products
+  value:
+    status: success
+    message: All products retrieved
+    data:
+      products:
+        - _id: "6641a8f3e48c2f001c5e99aa"
+          name: "T-shirt White Basic"
+          price: 199000
+          stock: 100
+          description: "High quality cotton T-shirt"
+          images: "product-image.jpg"
+          category: "6641a7dbe48c2f001c5e99a0"
+          createdAt: "2025-04-28T10:00:00Z"
+          updatedAt: "2025-04-28T10:00:00Z"
+      pagination:
+        total: 1
+        page: 1
+        limit: 25
+        totalPages: 1
+
+GetProductsByCategoryExample:
+  summary: Example list products by category
+  value:
+    status: success
+    message: Products by category retrieved
+    data:
+      products:
+        - _id: "6641a8f3e48c2f001c5e99aa"
+          name: "T-shirt White Basic"
+          price: 199000
+          stock: 100
+          description: "High quality cotton T-shirt"
+          images: "product-image.jpg"
+          category: "6641a7dbe48c2f001c5e99a0"
+          createdAt: "2025-04-28T10:00:00Z"
+          updatedAt: "2025-04-28T10:00:00Z"
+      pagination:
+        total: 1
+        page: 1
+        limit: 25
+        totalPages: 1
+
+GetProductByIdExample:
+  summary: Example get single product
+  value:
+    status: success
+    message: Product detail retrieved
+    data:
+      _id: "6641a8f3e48c2f001c5e99aa"
+      name: "T-shirt White Basic"
+      price: 199000
+      stock: 100
+      description: "High quality cotton T-shirt"
+      images: "product-image.jpg"
+      category:
+        _id: "6641a7dbe48c2f001c5e99a0"
+        name: "T-Shirts"
+      createdAt: "2025-04-28T10:00:00Z"
+      updatedAt: "2025-04-28T10:00:00Z"
+
+UpdateProductExample:
+  summary: Example after update product
+  value:
+    status: success
+    message: Product updated successfully
+    data:
+      product:
+        _id: "6641a8f3e48c2f001c5e99aa"
+        name: "T-shirt White Premium"
+        price: 249000
+        stock: 90
+        description: "Premium cotton, better quality"
+        images: "product-image-updated.jpg"
+        category: "6641a7dbe48c2f001c5e99a0"
+        createdAt: "2025-04-28T10:00:00Z"
+        updatedAt: "2025-04-28T12:00:00Z"
+
+AddAddressSuccessExample:
+  description: Example of added user address success response
+  value:
+    status: success
+    message: User Address added successfully
+    data:
+      _id: '66294265e51dfd7c7d6a8c43'
+      userId: '66294265e51dfd7c7d6a8d94'
+      label: 'Rumah'
+      recipientName: 'Budi Santoso'
+      street: 'Jalan Kenanga No. 12'
+      city: 'Jakarta Selatan'
+      province: 'DKI Jakarta'
+      postalCode: '12345'
+      phoneNumber: '081234567890'
+
+GetAllAddressSuccessExample:
+  description: Example of get list of user address success response
+  value:
+    status: success
+    message: List of address retrieved
+    data:
+      - _id: '66294265e51dfd7c7d6a8c43'
+        userId: '66294265e51dfd7c7d6a8d94'
+        label: 'Rumah'
+        recipientName: 'Budi Santoso'
+        street: 'Jalan Kenanga No. 12'
+        city: 'Jakarta Selatan'
+        province: 'DKI Jakarta'
+        postalCode: '12345'
+        phoneNumber: '081234567890'
+
+      - _id: '66294265eeo90d7c7d6a8c66'
+        userId: '66294265e51dfd7c7d6a8d94'
+        label: 'Kantor'
+        recipientName: 'Budi Santoso'
+        street: 'Jalan Mawar No. 45'
+        city: 'Jakarta Selatan'
+        province: 'DKI Jakarta'
+        postalCode: '12345'
+        phoneNumber: '081234567890'
+
+UpdateAddressSuccessExample:
+  description: Example of get list of user address success response
+  value:
+    status: success
+    message: List of address retrieved
+    data:
+      _id: '66294265e51dfd7c7d6a8c43'
+      userId: '66294265e51dfd7c7d6a8d94'
+      label: 'Rumah'
+      recipientName: 'Budi Santoso update'
+      street: 'Jalan Kenanga No. 12'
+      city: 'Jakarta Selatan'
+      province: 'DKI Jakarta'
+      postalCode: '12345'
+      phoneNumber: '081234567890'
+
+DeleteAddressSuccessExample:
+  description: Example of get list of user address success response
+  value:
+    status: success
+    message: Address deleted successfully
+    data: null
+
+GetAddressByIdSuccessExample:
+  description: Example of get list of user address success response
+  value:
+    status: success
+    message: List of address retrieved
+    data:
+      _id: '66294265e51dfd7c7d6a8c43'
+      userId: '66294265e51dfd7c7d6a8d94'
+      label: 'Rumah'
+      recipientName: 'Budi Santoso'
+      street: 'Jalan Kenanga No. 12'
+      city: 'Jakarta Selatan'
+      province: 'DKI Jakarta'
+      postalCode: '12345'
+      phoneNumber: '081234567890'
+
+DeleteWishlistSuccessExample:
+  description: Example of wishlist deleted success response
+  value:
+    status: success
+    message: Delete product from wishlist successfully
+    data: null
+
+AddWishlistSuccessExample:
+  description: Example of wishlist deleted success response
+  value:
+    status: success
+    message: Add product to wishlist successfully
+    data:
+      _id: '66294265e51dfd7c7d6s8eh3'
+      userId: '66294265e51dfd7c7d6a8d94'
+      product: '6641a8f3e48c2f001c5e99aa'
+      createdAt: '2024-04-01T10:00:00.000Z'
+      updatedAt: '2025-04-28T12:00:00.000Z'
+
+GetWishlistsSuccessExample:
+  description: Example of wishlist deleted success response
+  value:
+    status: success
+    message: Add product to wishlist successfully
+    data:
+      - _id: '66294265e51dfd7c7d6s8eh3'
+        userId: '66294265e51dfd7c7d6a8d94'
+        product:
+          _id: '6641a8f3e48c2f001c5e99aa'
+          name: 'T-shirt White Basic'
+          variants:
+            - price: 199000
+
+GetCategoriesSuccessExample:
+  description: Example of get list of categories success response
+  value:
+    status: success
+    message: Get list of categories successfully
+    data:
+      - _id: '66294265e51dfd7c7d6s8eh3'
+        name: T-Shirts
+        slug: t-shirts
+        parents: '66294265e51dfd7c7d6s8eh3'
+        createdAt: "2024-04-01T10:00:00.000Z"
+        updatedAt: "2025-04-28T12:00:00.000Z"
+
+AddCategorySuccessExample:
+  description: Example of category added success response
+  value:
+    status: success
+    message: Category added successfully
+    data:
+      _id: '66294265e51dfd7c7d6s8eh3'
+      name: T-Shirts
+      slug: t-shirts
+      parents: '66294265e51dfd7c7d6s8eh3'
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T12:00:00.000Z"
+
+UpdateCategorySuccessExample:
+  description: Example of category updated success response
+  value:
+    status: success
+    message: Category updated successfully
+    data:
+      _id: '66294265e51dfd7c7d6s8eh3'
+      name: T-Shirts update
+      slug: t-shirts-update
+      parents: null
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T12:00:00.000Z"
+
+DeleteCategorySuccessExample:
+  description: Example of category deleted success response
+  value:
+    status: success
+    message: Category deleted successfully
+    data: null
+
+AddBankAccountSuccessExample:
+  description: Example of bank account added success response
+  value:
+    status: success
+    message: Bank account added successfully
+    data:
+      _id: '661f3e31d4f2a1b7c4567890'
+      userId: '661f3e31d4f2a1b7c4567890'
+      type: 'bank'
+      provider: 'BCA'
+      accountName: 'John Doe'
+      accountNumber: '1234567890'
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T12:00:00.000Z"
+
+GetBankAccountSuccessExample:
+  description: Example of get bank account list success response
+  value:
+    status: success
+    message: List of bank accounts successfully retrieved
+    data:
+      - _id: '661f3e31d4f2a1b7c4567890'
+        userId: '661f3e31d4f2a1b7c4567890'
+        type: 'bank'
+        provider: 'BCA'
+        accountName: 'John Doe'
+        accountNumber: '1234567890'
+        createdAt: "2024-04-01T10:00:00.000Z"
+        updatedAt: "2025-04-28T12:00:00.000Z"
+
+GetBankAccountByIdSuccessExample:
+  description: Example of get bank account by id success response
+  value:
+    status: success
+    message: Get bank account by id successfully
+    data:
+      _id: '661f3e31d4f2a1b7c4567890'
+      userId: '661f3e31d4f2a1b7c4567890'
+      type: 'bank'
+      provider: 'BCA'
+      accountName: 'John Doe'
+      accountNumber: '1234567890'
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T12:00:00.000Z"
+
+UpdateBankAccountSuccessExample:
+  description: Example of bank account updated success response
+  value:
+    status: success
+    message: Bank account updated successfully
+    data:
+      _id: '661f3e31d4f2a1b7c4567890'
+      userId: '661f3e31d4f2a1b7c4567890'
+      type: 'bank'
+      provider: 'BCA'
+      accountName: 'John Doe Update'
+      accountNumber: '1234567890'
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2025-04-28T12:00:00.000Z"
+
+DeleteBankAccountSuccessExample:
+  description: Example of bank account deleted success response
+  value:
+    status: success
+    message: Bank account deleted successfully
+    data: null
+
+AddCartSuccessExample:
+  description: Example of product added to cart success response
+  value:
+    status: success
+    message: Add product to cart successfully
+    data:
+      _id: '661f3e31d4f2a1b7c4567890'
+      userId: '661f3e31d4f2a1b7c4567890'
+      product: '661f3e31d4f2a1b7c4567890'
+      variant:
+        color: 'black'
+        size: 'xl'
+      quantity: 2
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2024-04-01T10:00:00.000Z"
+
+GetCartsSuccessExample:
+  description: Example of product added to cart success response
+  value:
+    status: success
+    message: Add product to cart successfully
+    data:
+      - _id: '661f3e31d4f2a1b7c4567890'
+        userId: '661f3e31d4f2a1b7c4567890'
+        product: '661f3e31d4f2a1b7c4567890'
+        variant:
+          color: 'black'
+          size: 'xl'
+        quantity: 2
+        createdAt: "2024-04-01T10:00:00.000Z"
+        updatedAt: "2024-04-01T10:00:00.000Z"
+
+UpdateQuantitySuccessExample:
+  description: Example of quantity updated success response
+  value:
+    status: success
+    message: Quantity updated successfully
+    data:
+      _id: '661f3e31d4f2a1b7c4567890'
+      userId: '661f3e31d4f2a1b7c4567890'
+      product: '661f3e31d4f2a1b7c4567890'
+      variant:
+        color: 'black'
+        size: 'xl'
+      quantity: 4
+      createdAt: "2024-04-01T10:00:00.000Z"
+      updatedAt: "2024-04-01T10:00:00.000Z"
+
+DeleteProductFromCartSuccessExample:
+  description: Example of product deleted from cart success response
+  value:
+    status: success
+    message: Product deleted from cart successfully
+    data: null
+
+DeleteAllProductFromCartSuccessExample:
+  description: Example of all product deleted from cart success response
+  value:
+    status: success
+    message: All product deleted from cart successfully
+    data: null
+
+#CreateOrderRequestExample:
+#  summary: Example payload for creating an order
+#  value:
+#    items:
+#      - productId: "66176a5fa5e452d72a03e5c1"
+#        quantity: 2
+#        variant:
+#          color: "black"
+#          size: "M"
+#      - productId: "66176a5fa5e452d72a03e5c2"
+#        quantity: 1
+#        variant:
+#          color: "white"
+#          size: "L"
+#    shippingAddress: "66176a5fa5e452d72a03e5b9"
+#    paymentMethod: "e_wallet"
+
+CreateOrderSuccessExample:
+  summary: Example success response after creating an order
+  value:
+    status: 201
+    message: Order created
+    data:
+      order:
+        _id: "662a15fa6c4be9e6a6c1a1a1"
+        userId: "66176a5fa5e452d72a03e5aa"
+        items:
+          - productId: "66176a5fa5e452d72a03e5c1"
+            quantity: 2
+            variant:
+              color: "black"
+              size: "M"
+            price: 150000
+          - productId: "66176a5fa5e452d72a03e5c2"
+            quantity: 1
+            variant:
+              color: "white"
+              size: "L"
+            price: 200000
+        shippingAddress: "66176a5fa5e452d72a03e5b9"
+        paymentMethod: "e_wallet"
+        totalPrice: 500000
+        status: "pending"
+        isPaid: false
+        createdAt: "2025-05-01T09:00:00.000Z"
+        updatedAt: "2025-05-01T09:00:00.000Z"
+      snapToken: "6c0a6a6b-a1b2-4b7e-821e-7124a948e6e2"
+
+GetOrdersSuccessExample:
+  summary: Example response for getting all orders
+  value:
+    status: 200
+    message: List of orders retrieved
+    data:
+      - _id: "662a15fa6c4be9e6a6c1a1a1"
+        userId:
+          _id: "66176a5fa5e452d72a03e5aa"
+          username: "john_doe"
+          email: "john@example.com"
+        items:
+          - productId:
+              _id: "66176a5fa5e452d72a03e5c1"
+              name: "T-Shirt"
+              slug: "t-shirt"
+            quantity: 2
+            variant:
+              color: "black"
+              size: "M"
+            price: 150000
+        shippingAddress:
+          _id: "66176a5fa5e452d72a03e5b9"
+          street: "Jl. Merdeka No.1"
+          city: "Jakarta"
+          province: "DKI Jakarta"
+          postalCode: "12345"
+        paymentMethod: "e_wallet"
+        totalPrice: 300000
+        status: "processing"
+        isPaid: true
+        paidAt: "2025-05-01T10:00:00.000Z"
+        createdAt: "2025-05-01T09:00:00.000Z"
+        updatedAt: "2025-05-01T10:05:00.000Z"
+
+GetOrderByIdSuccessExample:
+  summary: Example response for getting a single order by ID
+  value:
+    status: 200
+    message: Order detail retrieved
+    data:
+      _id: "662a15fa6c4be9e6a6c1a1a1"
+      userId:
+        _id: "66176a5fa5e452d72a03e5aa"
+        username: "john_doe"
+        email: "john@example.com"
+      items:
+        - productId:
+            _id: "66176a5fa5e452d72a03e5c1"
+            name: "T-Shirt"
+            slug: "t-shirt"
+          quantity: 2
+          variant:
+            color: "black"
+            size: "M"
+          price: 150000
+      shippingAddress:
+        _id: "66176a5fa5e452d72a03e5b9"
+        street: "Jl. Merdeka No.1"
+        city: "Jakarta"
+        province: "DKI Jakarta"
+        postalCode: "12345"
+      paymentMethod: "e_wallet"
+      totalPrice: 300000
+      status: "shipped"
+      isPaid: true
+      paidAt: "2025-05-01T10:00:00.000Z"
+      shippedAt: "2025-05-01T12:00:00.000Z"
+      createdAt: "2025-05-01T09:00:00.000Z"
+      updatedAt: "2025-05-01T12:00:00.000Z"
+
+UpdateOrderStatusExample:
+  summary: Example payload for updating order status
+  value:
+    status: "completed"
+
+UpdateOrderStatusSuccessExample:
+  summary: Example response after updating order status
+  value:
+    status: 200
+    message: Order status updated
+    data:
+      _id: "662a15fa6c4be9e6a6c1a1a1"
+      status: "completed"
+      updatedAt: "2025-05-01T14:00:00.000Z"
+
+CancelOrderSuccessExample:
+  summary: Example response after cancelling an order
+  value:
+    status: 200
+    message: Order cancelled successfully
+    data:
+      _id: "662a15fa6c4be9e6a6c1a1a1"
+      status: "cancelled"
+      cancelledAt: "2025-05-01T13:00:00.000Z"
+      updatedAt: "2025-05-01T13:00:00.000Z"
+
+PaymentSuccessExample:
+  summary: Example payment success response
+  value:
+    status: 200
+    message: Payment data success
+    data:
+      _id: "60c78ac0d94ac8dc7a"
+      order: "6632234b76c1a23abc1a4567"
+      paymentType: "credit_card"
+      transactionStatus: "settlement"
+      transactionId: "TRX-00123"
+      paymentResult:
+        bank: "bca"
+        va_number: "1234567890"
+      paidAt: "2025-05-01T08:00:00.000Z"
+
+GetAllPaymentSuccessExample:
+  summary: Example get all payment success response
+  value:
+    status: 200
+    message: Get list of payments retrieved
+    data:
+      - _id: "60c78ac0d94ac8dc7a"
+        order:
+          _id: "662a15fa6c4be9e6a6c1a1a1"
+          userId:
+            _id: "66176a5fa5e452d72a03e5aa"
+            username: "john_doe"
+            email: "john@example.com"
+          items:
+            - productId:
+                _id: "66176a5fa5e452d72a03e5c1"
+                name: "T-Shirt"
+                slug: "t-shirt"
+              quantity: 2
+              variant:
+                color: "black"
+                size: "M"
+              price: 150000
+          shippingAddress:
+            _id: "66176a5fa5e452d72a03e5b9"
+            street: "Jl. Merdeka No.1"
+            city: "Jakarta"
+            province: "DKI Jakarta"
+            postalCode: "12345"
+          paymentMethod: "e_wallet"
+          totalPrice: 300000
+          status: "shipped"
+          isPaid: true
+          paidAt: "2025-05-01T10:00:00.000Z"
+          shippedAt: "2025-05-01T12:00:00.000Z"
+          createdAt: "2025-05-01T09:00:00.000Z"
+          updatedAt: "2025-05-01T12:00:00.000Z"
+        paymentType: "credit_card"
+        transactionStatus: "settlement"
+        transactionId: "TRX-00123"
+        paymentResult:
+          bank: "bca"
+          va_number: "1234567890"
+        paidAt: "2025-05-01T08:00:00.000Z"
+
+

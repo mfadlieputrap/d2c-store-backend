@@ -1,0 +1,142 @@
+/orders/create:
+  post:
+    tags:
+      - Order
+    summary: Create a new order
+    operationId: createOrder
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/CreateOrderRequest'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/CreateOrderSuccess'
+      400:
+        $ref: '../components/responses.yaml#/BadRequest'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/orders:
+  get:
+    tags:
+      - Order
+    summary: Get all orders (admin only)
+    operationId: getAllOrders
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetOrdersSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/orders/me:
+  get:
+    tags:
+      - Order
+    summary: Get all orders by current user
+    operationId: getOrdersByUser
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetOrdersSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/orders/{orderId}:
+  get:
+    tags:
+      - Order
+    summary: Get order detail by ID (user only)
+    operationId: getOrderById
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetOrderByIdSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/orders/status/{orderId}:
+  put:
+    tags:
+      - Order
+    summary: Update order status (admin only)
+    operationId: updateOrderStatus
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                enum: [pending, paid, processing, shipped, completed, cancelled]
+                example: shipped
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateOrderStatusSuccess'
+      400:
+        $ref: '../components/responses.yaml#/BadRequest'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/orders/cancel/{orderId}:
+  put:
+    tags:
+      - Order
+    summary: Cancel order (user only)
+    operationId: cancelOrder
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/CancelOrderSuccess'
+      400:
+        $ref: '../components/responses.yaml#/BadRequest'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

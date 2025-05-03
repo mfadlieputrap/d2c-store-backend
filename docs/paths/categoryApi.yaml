@@ -1,0 +1,89 @@
+/categories:
+  get:
+    tags:
+      - Category
+    summary: Get list of categories
+    operationId: getCategories
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetCategoriesSuccess'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/categories/add:
+  post:
+    tags:
+      - Category
+    summary: Add category
+    operationId: addCategory
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/AddCategoryRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/AddCategorySuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/categories/update/{categoryId}:
+  put:
+    tags:
+      - Category
+    summary: Update category
+    operationId: updateCategory
+    parameters:
+      - in: path
+        name: categoryId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/UpdateCategoryRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateCategorySuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/categories/delete/{categoryId}:
+  delete:
+    tags:
+      - Category
+    summary: Delete category
+    operationId: deleteCategory
+    parameters:
+      - in: path
+        name: categoryId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteCategorySuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

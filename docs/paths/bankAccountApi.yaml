@@ -1,0 +1,113 @@
+/bank-accounts/add:
+  post:
+    tags:
+      - Bank Account
+    summary: Add bank account
+    operationId: addBankAccount
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '../components/schemas.yaml#/AddBankAccountRequest'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/AddBankAccountSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/bank-accounts:
+  get:
+    tags:
+      - Bank Account
+    summary: Get all bank accounts
+    operationId: getAllBankAccount
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetBankAccountSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/bank-accounts/{bankAccountId}:
+  get:
+    tags:
+      - Bank Account
+    summary: Get bank accounts by id
+    parameters:
+      - in: path
+        name: bankAccountId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetBankAccountByIdSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/bank-accounts/update/{bankAccountId}:
+  put:
+    tags:
+      - Bank Account
+    summary: Update bank account
+    operationId: updateBankAccount
+    parameters:
+      - in: path
+        name: bankAccountId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/UpdateBankAccountRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateBankAccountSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/bank-accounts/delete/{bankAccountId}:
+  delete:
+    tags:
+      - Bank Account
+    summary: Delete bank account
+    operationId: deleteBankAccount
+    parameters:
+      - in: path
+        name: bankAccountId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteBankAccountSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

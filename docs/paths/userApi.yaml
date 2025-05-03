@@ -1,62 +1,80 @@
-paths:
-  /user/profile:
-    get:
-      tags:
-        - User
-      summary: Endpoint for get user information profile
-      operationId: getUserProfile
-      responses:
-        200:
-          $ref: '../components/responses.yaml#/components/responses/GetProfileSuccess'
-        401:
-          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
-        403:
-          $ref: '../components/responses.yaml#/components/responses/Forbidden'
-        404:
-          $ref: '../components/responses.yaml#/components/responses/NotFound'
-        500:
-          $ref: '../components/responses.yaml#/components/responses/InternalServerError'
+/user/profile:
+  get:
+    tags:
+      - User
+    summary: Endpoint for get user information profile
+    operationId: getUserProfile
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetProfileSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
 
-  /user/update:
-    put:
-      tags:
-        - User
-      summary: Endpoint for updating user data
-      operationId: updateUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas.yaml#/components/schemas/UserRequestUpdate'
-      responses:
-        200:
-          $ref: '../components/responses.yaml#/components/responses/UserUpdateSuccess'
-        400:
-            $ref: "../components/responses.yaml#/components/responses/BadRequest"
-        401:
-          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
-        403:
-          $ref: '../components/responses.yaml#/components/responses/Forbidden'
-        404:
-          $ref: '../components/responses.yaml#/components/responses/NotFound'
-        500:
-          $ref: '../components/responses.yaml#/components/responses/InternalServerError'
+/user/update:
+  put:
+    tags:
+      - User
+    summary: Endpoint for updating user data
+    operationId: updateUser
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/UserRequestUpdate'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateUserSuccess'
+      400:
+          $ref: "../components/responses.yaml#/BadRequest"
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
 
-  /user/delete:
-    delete:
-      tags:
-        - User
-      summary: Endpoint for user delete profile or account
-      operationId: deleteUser
-      responses:
-        200:
-          $ref: '../components/responses.yaml#/components/responses/UserDeletedSuccess'
-        401:
-          $ref: '../components/responses.yaml#/components/responses/Unauthorized'
-        403:
-          $ref: '../components/responses.yaml#/components/responses/Forbidden'
-        404:
-          $ref: '../components/responses.yaml#/components/responses/NotFound'
-        500:
-          $ref: '../components/responses.yaml#/components/responses/InternalServerError'
+/user/delete:
+  delete:
+    tags:
+      - User
+    summary: Endpoint for user delete profile or account
+    operationId: deleteUser
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteProfileSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/user/change-password:
+  put:
+    tags:
+      - User
+    summary: Endpoint for user change password
+    operationId: changePassword
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/ChangePasswordSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+

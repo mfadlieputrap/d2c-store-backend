@@ -1,0 +1,123 @@
+/payment/create:
+  post:
+    tags:
+      - Payment
+    summary: Create a payment
+    operationId: createPayment
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/PaymentRequest'
+    responses:
+      '201':
+        $ref: '../components/responses.yaml#/PaymentCreatedSuccess'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/payment:
+  get:
+    tags:
+      - Payment
+    summary: Get all payments
+    operationId: getPayments
+    responses:
+      '200':
+        $ref: '../components/responses.yaml#/AllPaymentsRetrievedSuccess'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/payment/{orderId}:
+  get:
+    tags:
+      - Payment
+    summary: Get payment by orderId
+    operationId: getPaymentByOrderId
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        $ref: '../components/responses.yaml#/PaymentRetrievedSuccess'
+      '404':
+        $ref: '../components/responses.yaml#/NotFound'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/payment/{orderId}/status:
+  put:
+    tags:
+      - Payment
+    summary: Update payment status
+    operationId: updatePaymentStatus
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              transactionStatus:
+                type: string
+    responses:
+      '200':
+        $ref: '../components/responses.yaml#/PaymentUpdatedSuccess'
+      '404':
+        $ref: '../components/responses.yaml#/NotFound'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/payment/delete/{orderId}:
+  delete:
+    tags:
+      - Payment
+    summary: Delete payment by orderId
+    operationId: deletePaymentByOrderId
+    parameters:
+      - in: path
+        name: orderId
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        $ref: '../components/responses.yaml#/PaymentDeletedSuccess'
+      '404':
+        $ref: '../components/responses.yaml#/NotFound'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/payment/midtrans/callback:
+  post:
+    tags:
+      - Payment
+    summary: Handle Midtrans callback
+    operation: handleMidtransCallback
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              order_id:
+                type: string
+              transaction_status:
+                type: string
+              transaction_id:
+                type: string
+    responses:
+      '200':
+        $ref: '../components/responses.yaml#/CallbackHandledSuccess'
+      '500':
+        $ref: '../components/responses.yaml#/InternalServerError'

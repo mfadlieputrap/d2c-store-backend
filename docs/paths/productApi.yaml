@@ -1,0 +1,145 @@
+/products/add:
+  post:
+    tags:
+      - Product
+    summary: Add new product
+    operationId: addProduct
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '../components/schemas.yaml#/AddProductRequest'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/AddProductSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/products:
+  get:
+    tags:
+      - Product
+    summary: Get all products
+    parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 25
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetProductsSuccess'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/products/category/{categoryId}:
+  get:
+    tags:
+      - Product
+    summary: Get products by category
+    parameters:
+      - in: path
+        name: categoryId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          default: 25
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetProductsByCategorySuccess'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/products/{productId}:
+  get:
+    tags:
+      - Product
+    summary: Get product detail
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetProductByIdSuccess'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/products/update/{productId}:
+  put:
+    tags:
+      - Product
+    summary: Update product
+    operationId: updateProduct
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/UpdateProductRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateProductSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/products/delete/{productId}:
+  delete:
+    tags:
+      - Product
+    summary: Delete product
+    operationId: deleteProduct
+    parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteProductSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'

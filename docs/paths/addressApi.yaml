@@ -1,0 +1,99 @@
+/address:
+  get:
+    tags:
+      - Address
+    summary: Get all user addresses
+    operationId: getAllAddress
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetAllAddressSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/address/{addressId}:
+  get:
+    tags:
+      - Address
+    summary: Get address by id
+    operationId: getAddressById
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/GetAddressByIdSuccess'
+      400:
+        $ref: "../components/responses.yaml#/BadRequest"
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/address/update/{addressId}:
+  put:
+    tags:
+      - Address
+    summary: Update user address
+    operationId: updateAddress
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas.yaml#/UpdateAddressRequest'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/UpdateAddressSuccess'
+      400:
+        $ref: "../components/responses.yaml#/BadRequest"
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/address/delete/{addressId}:
+  delete:
+    tags:
+      - Address
+    summary: Delete user address
+    operationId: deleteUser
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/DeleteAddressSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
+
+/address/add:
+  post:
+    tags:
+      - Address
+    summary: Add user address
+    operationId: addAddress
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/AddAddressSuccess'
+      401:
+        $ref: '../components/responses.yaml#/Unauthorized'
+      403:
+        $ref: '../components/responses.yaml#/Forbidden'
+      404:
+        $ref: '../components/responses.yaml#/NotFound'
+      500:
+        $ref: '../components/responses.yaml#/InternalServerError'
