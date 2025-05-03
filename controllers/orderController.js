@@ -87,7 +87,7 @@ export const getAllOrdersByUserId = async (req, res) => {
 
 export const getOrderById = async (req, res) => {
 	try {
-		const orderId = req.params.id;
+		const {orderId} = req.params;
 		const order = await Order.findById(orderId)
 			.populate('userId', 'username email')
 			.populate('shippingAddress')

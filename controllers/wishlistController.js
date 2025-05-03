@@ -14,7 +14,7 @@ export const getWishlistByUserId = async (req, res) => {
 }
 export const addProductToWishlist = async (req, res) => {
 	try {
-		const {productId: product} = req.body;
+		const {product} = req.body;
 		
 		const existing = await Wishlist.findOne({userId: req.user.id, product});
 		if(existing){
