@@ -66,7 +66,7 @@ export const deleteCategory = async (req, res) => {
 		if(!result){
 			return responseFormat(res, 404, "Category not found or already deleted");
 		}
-		return responseFormat(res, 404, "Category deleted successfully", result);
+		return responseFormat(res, 200, "Category deleted successfully", result);
 	}catch(e){
 		console.error('[DELETE CATEGORY] ', e.message);
 		return responseFormat(res, 500, error.message);
