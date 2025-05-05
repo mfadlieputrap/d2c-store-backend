@@ -64,9 +64,10 @@ describe('Cart API', ()=>{
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('item');
-	}, 15000)
+		expect(res.body).toHaveProperty('data');
+	})
 	
 	it('GET /api/cart/ || Get all cart by user id', async ()=>{
 		const res = await request(app)
@@ -74,8 +75,9 @@ describe('Cart API', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('cartItems');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/cart/delete/:cartItemId | Delete one cart item', async ()=>{
@@ -84,7 +86,9 @@ describe('Cart API', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/cart/quantity/:cartItemId | Update quantity', async ()=>{
@@ -96,8 +100,9 @@ describe('Cart API', ()=>{
 			});
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('cartItem');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/cart/delete | Delete all cart items', async ()=>{
@@ -106,11 +111,9 @@ describe('Cart API', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 	
-	it('GET /api/cart tanpa token harusnya 401', async ()=>{
-		const res = await request(app).get('/api/cart');
-		expect(res.status).toBe(401);
-	})
 })

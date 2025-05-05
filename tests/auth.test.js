@@ -1,20 +1,14 @@
-import {jest} from '@jest/globals';
+import {expect, jest} from '@jest/globals';
 import User from '../models/User.js';
 import bcrypt from "bcrypt";
 import request from 'supertest';
 import app from '../app.js';
-jest.mock('../models/User.js');
+import {dummyUser} from  '../utils/dummyHelper.js';
+import {body} from "express-validator";
 
 
-let dummyUser;
 
 beforeAll(async () => {
-	dummyUser = {
-		_id: 'fakeid123',
-		username: 'mockuser',
-		email: 'mock@example.com',
-		password: await bcrypt.hash('Password123!', 10)
-	};
 	
 	User.findOne = jest.fn();
 	User.create = jest.fn();
@@ -37,11 +31,15 @@ describe('Auth tanpa DB (mock)', ()=>{
 			});
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('login user successfully', async ()=>{
-		User.findOne.mockResolvedValue(dummyUser);
+		User.findOne.mockReturnValue({
+			select: jest.fn().mockResolvedValue(dummyUser)
+		});
 		
 		const res = await request(app)
 			.post('/api/auth/login')
@@ -50,6 +48,8 @@ describe('Auth tanpa DB (mock)', ()=>{
 				password: 'Password123!',
 			});
 		expect(res.status).toBe(200);
-		expect(res.body).toHaveProperty('token');
+		expect(res.body).toHaveProperty('status');
+		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 })

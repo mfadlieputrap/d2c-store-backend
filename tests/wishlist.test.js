@@ -40,8 +40,9 @@ describe('Wishlist api', () => {
 			});
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('wishlist');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('Get wishlist by user id', async () => {
@@ -51,8 +52,9 @@ describe('Wishlist api', () => {
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('wishlists');
+		expect(res.body).toHaveProperty('data');
 	});
 	
 	it('Delete product from wishlist', async () => {

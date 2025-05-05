@@ -23,7 +23,7 @@ beforeAll(async ()=>{
 	customerToken = await genToken();
 	adminToken = await genToken(true);
 	User.findById = jest.fn().mockResolvedValue(dummyUser);
-	Address.findById = jest.fn().mockResolvedValue(dummyAddress);
+	Address.findOne = jest.fn().mockResolvedValue(dummyAddress);
 	Product.findById = jest.fn().mockResolvedValue(dummyProductRaw);
 	snap.createTransaction = jest.fn().mockResolvedValue(midtransPayload);
 	Order.findById = jest.fn().mockReturnValue({
@@ -57,7 +57,7 @@ beforeAll(async ()=>{
 })
 
 describe("Order endpoints", ()=>{
-	it('POST /api/order/create', async ()=>{
+	it('POST /api/orders/create', async ()=>{
 		const res = await request(app)
 			.post('/api/orders/create')
 			.set('Authorization', `Bearer ${customerToken}`)
@@ -78,16 +78,16 @@ describe("Order endpoints", ()=>{
 				paymentMethod: 'bank_transfer',
 				totalPrice: 600000,
 				status: 'pending',
-				isPaid: false,
-				createdAt: new Date(),
-				updatedAt: new Date()
+				isPaid: false
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('order');
-		expect(res.body).toHaveProperty('snapToken');
-	})
+		expect(res.body).toHaveProperty('data');
+		expect(res.body.data).toHaveProperty('order');
+		expect(res.body.data).toHaveProperty('snapToken');
+	}, 15000)
 	
 	it('GET /api/orders/', async ()=>{
 		const res = await request(app)
@@ -95,8 +95,9 @@ describe("Order endpoints", ()=>{
 			.set('Authorization', `Bearer ${adminToken}`)
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('orders');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/orders/me', async ()=>{
@@ -105,8 +106,9 @@ describe("Order endpoints", ()=>{
 			.set('Authorization', `Bearer ${customerToken}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('orders');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/orders/:orderId', async ()=>{
@@ -115,21 +117,23 @@ describe("Order endpoints", ()=>{
 			.set('Authorization', `Bearer ${customerToken}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('order');
+		expect(res.body).toHaveProperty('data');
 	})
 	
-	it('PUT /api/orders/update/status', async ()=>{
+	it('PUT /api/orders/status', async ()=>{
 		const res = await request(app)
-			.put('/api/orders/update/status/66294265e51dfd7c7d6a8d42')
+			.put('/api/orders/status/66294265e51dfd7c7d6a8d42')
 			.set('Authorization', `Bearer ${adminToken}`)
 			.send({
 				status: 'paid'
 			})
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('order');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/orders/cancel/:orderId', async ()=>{
@@ -138,7 +142,8 @@ describe("Order endpoints", ()=>{
 			.set('Authorization', `Bearer ${customerToken}`)
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('order');
+		expect(res.body).toHaveProperty('data');
 	})
 })

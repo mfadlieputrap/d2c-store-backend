@@ -36,7 +36,9 @@ describe('Bank account endpoint', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
-		expect(res.body).toHaveProperty('bankAccounts');
+		expect(res.body).toHaveProperty('status');
+		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/bank-accounts/:bankAccountId', async()=>{
@@ -46,8 +48,9 @@ describe('Bank account endpoint', ()=>{
 				 `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('bankAccount');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('POST /api/bank-accounts/add', async()=>{
@@ -58,14 +61,13 @@ describe('Bank account endpoint', ()=>{
 				type: 'bank',
 				provider: 'BCA',
 				accountName: 'John Doe',
-				accountNumber: '1234567890',
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				accountNumber: '1234567890'
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('bankAccount');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/bank-accounts/update/:bankAccountId', async ()=>{
@@ -77,8 +79,9 @@ describe('Bank account endpoint', ()=>{
 			})
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('bankAccount');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/bank-accounts/delete/:bankAccountId', async()=>{
@@ -87,7 +90,8 @@ describe('Bank account endpoint', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('result');
+		expect(res.body).toHaveProperty('data');
 	})
 })

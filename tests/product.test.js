@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../app.js';
+import path from 'path';
 import {beforeAll, jest} from '@jest/globals';
 import Product from '../models/Product.js';
 import {genToken, dummyProductRaw, dummyProductPopulated, dummyUser} from "../utils/dummyHelper.js";
@@ -51,23 +52,30 @@ describe('Product API', ()=>{
 		const res = await request(app)
 			.post('/api/products/add')
 			.set('Authorization', `Bearer ${adminToken}`)
-			.send({
-				name: "Keyboard Gaming",
-				description: "Keyboard gaming with RGB backlight and red Switch",
-				detail: "Keyboard gaming compact 60% with backlight RGB and red switch hotswap",
-				category: "66294265e51dfd7c7d6a8c45",
-				variants:[{
-					color: "Full Black",
-					size: "60%",
-					stock: 300,
-					price: 178000
-				}],
-				images: ["keyboard-gaming.jpg"]
-			})
+			.field('name', "Keyboard Gaming")
+			.field('description', "Keyboard gaming with RGB backlight and red Switch")
+			.field('detail', "Keyboard gaming compact 60% with backlight RGB and red switch hotswap")
+			.field('category', "66294265e51dfd7c7d6a8c45")
+			.field('variants[0].color', 'Full Black')
+			.field('variants[0].sizes[0].size', '60%')
+			.field('variants[0].sizes[0].stock', 300)
+			.field('variants[0].sizes[0].price', 178000)
+			// .field('variants', JSON.stringify([
+			// 	{
+			// 		color: "Full Black",
+			// 		sizes: [{
+			// 			size: "60%",
+			// 			stock: 300,
+			// 			price: 178000
+			// 		}]
+			// 	}
+			// ]))
+			.attach('images', path.resolve('uploads/1745659741342-493734522-3024559-cover.jpg'));
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('product');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('Get all products', async()=>{
@@ -76,11 +84,11 @@ describe('Product API', ()=>{
 		
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message', 'All products retrieved');
-		expect(res.body).toHaveProperty('products');
-		expect(Array.isArray(res.body.products)).toBe(true);
-		expect(res.body.products[0]).toHaveProperty('name');
-		expect(res.body).toHaveProperty('pagination');
-		expect(res.body.pagination).toEqual({
+		expect(res.body).toHaveProperty('data');
+		expect(Array.isArray(res.body.data.products)).toBe(true);
+		expect(res.body.data.products[0]).toHaveProperty('name');
+		expect(res.body.data).toHaveProperty('pagination');
+		expect(res.body.data.pagination).toEqual({
 			total: 1,
 			page: 1,
 			limit: 25,
@@ -94,11 +102,11 @@ describe('Product API', ()=>{
 		
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message', 'Products by category retrieved');
-		expect(res.body).toHaveProperty('products');
-		expect(Array.isArray(res.body.products)).toBe(true);
-		expect(res.body.products[0]).toHaveProperty('name', 'Keyboard Gaming');
-		expect(res.body).toHaveProperty('pagination');
-		expect(res.body.pagination).toEqual({
+		expect(res.body).toHaveProperty('data');
+		expect(Array.isArray(res.body.data.products)).toBe(true);
+		expect(res.body.data.products[0]).toHaveProperty('name');
+		expect(res.body.data).toHaveProperty('pagination');
+		expect(res.body.data.pagination).toEqual({
 			total: 1,
 			page: 1,
 			limit: 25,
@@ -112,7 +120,7 @@ describe('Product API', ()=>{
 		
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('product');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('Update Product', async() =>{
@@ -125,7 +133,7 @@ describe('Product API', ()=>{
 		
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('product');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('Delete product', async ()=>{

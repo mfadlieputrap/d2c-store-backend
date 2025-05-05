@@ -47,8 +47,9 @@ describe('Address endpoints', () => {
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('addresses');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it("GET /api/address/:addressId | Get address by id", async ()=>{
@@ -57,8 +58,9 @@ describe('Address endpoints', () => {
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('address');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/address/add | Add address', async ()=> {
@@ -77,8 +79,9 @@ describe('Address endpoints', () => {
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('address');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/address/update/:addressId', async ()=>{
@@ -90,8 +93,9 @@ describe('Address endpoints', () => {
 			})
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('address');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/address/delete/:addressId', async ()=>{
@@ -100,6 +104,8 @@ describe('Address endpoints', () => {
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 })

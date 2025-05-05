@@ -45,8 +45,9 @@ describe('payment methods', () => {
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('payment');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/payments/:orderId', async ()=> {
@@ -56,8 +57,9 @@ describe('payment methods', () => {
 			.set('Authorization', `Bearer ${customerToken}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('payment');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/payments/', async ()=>{
@@ -66,8 +68,9 @@ describe('payment methods', () => {
 			.set('Authorization', `Bearer ${adminToken}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('payments');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/payments/:orderId/status', async ()=>{
@@ -78,8 +81,9 @@ describe('payment methods', () => {
 				transactionStatus: 'settlement',
 			})
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('payment')
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('POST /api/payments/midtrans/callback', async ()=> {
@@ -92,8 +96,9 @@ describe('payment methods', () => {
 			})
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('payment');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/payments/delete', async ()=>{
@@ -102,6 +107,8 @@ describe('payment methods', () => {
 			.set('Authorization', `Bearer ${adminToken}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	})
 })

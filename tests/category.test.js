@@ -34,8 +34,9 @@ describe('Category endpoints', ()=>{
 			})
 		
 		expect(res.status).toBe(201);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('category');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('GET /api/categories/', async ()=>{
@@ -44,8 +45,9 @@ describe('Category endpoints', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('categories');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('PUT /api/categories/update/:id', async ()=>{
@@ -57,8 +59,9 @@ describe('Category endpoints', ()=>{
 			})
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
-		expect(res.body).toHaveProperty('category');
+		expect(res.body).toHaveProperty('data');
 	})
 	
 	it('DELETE /api/categories/delete/:id', async()=>{
@@ -67,6 +70,8 @@ describe('Category endpoints', ()=>{
 			.set('Authorization', `Bearer ${token}`);
 		
 		expect(res.status).toBe(200);
+		expect(res.body).toHaveProperty('status');
 		expect(res.body).toHaveProperty('message');
+		expect(res.body).toHaveProperty('data');
 	});
 })
