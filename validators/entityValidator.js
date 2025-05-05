@@ -105,45 +105,44 @@ export const productValidation = (isUpdate = false) => [
 		.notEmpty().withMessage('Detail is required')
 		.optional({ checkFalsy: true }),
 	
-	body('images')
-		.if(()=> !isUpdate)
-		.isArray({ min: 1 }).withMessage('At least one image is required')
-		.optional({ checkFalsy: true }),
-	
-	body('images.*')
-		.optional({ checkFalsy: true })
-		.isURL().withMessage('Each image must be a valid URL')
-		.matches(/\.(jpg|jpeg|png|webp)$/i).withMessage('Image must be jpg, jpeg, png, or webp'),
+	body('images').custom((value, { req }) => {
+		console.log(req.body)
+		console.log(req.files)
+		if (!isUpdate && (!req.files || req.files.length === 0)) {
+			throw new Error('At least one image is required');
+		}
+		return true;
+	}),
 	
 	body('variants')
-		.if(()=> !isUpdate)
-		// .if((value, { req }) => !isUpdate || req.body.variants)
+		.if(() => !isUpdate)
 		.isArray({ min: 1 }).withMessage('Variants must be a non-empty array')
-		.optional({ checkFalsy: true }),
-	
-	body('variants.*.price')
-		.if(()=> !isUpdate)
-		// .if((value, { req }) => !isUpdate || req.body.variants)
-		.isFloat({ gt: 0 }).withMessage('Each variant price must be greater than 0')
-		.optional({ checkFalsy: true }),
-	
-	body('variants.*.stock')
-		.if(()=> !isUpdate)
-		// .if((value, { req }) => !isUpdate || req.body.variants)
-		.isInt({ gt: 0 }).withMessage('Each variant stock must be greater than 0')
 		.optional({ checkFalsy: true }),
 	
 	body('variants.*.color')
 		.optional({ checkFalsy: true })
-		// .if((value, { req }) => !isUpdate || req.body.variants)
 		.notEmpty().withMessage('Color is required in variants'),
-		
 	
-	body('variants.*.size')
-		.if(()=> !isUpdate)
-		// .if((value, { req }) => !isUpdate || req.body.variants)
-		.notEmpty().withMessage('Size is required in variants')
+	body('variants.*.sizes')
+		.if(() => !isUpdate)
+		.isArray({ min: 1 }).withMessage('Each variant must have at least one size')
 		.optional({ checkFalsy: true }),
+	
+	body('variants.*.sizes.*.size')
+		.if(() => !isUpdate)
+		.notEmpty().withMessage('Size is required in each size object')
+		.optional({ checkFalsy: true }),
+	
+	body('variants.*.sizes.*.price')
+		.if(() => !isUpdate)
+		.isFloat({ gt: 0 }).withMessage('Each size must have a valid price greater than 0')
+		.optional({ checkFalsy: true }),
+	
+	body('variants.*.sizes.*.stock')
+		.if(() => !isUpdate)
+		.isInt({ gt: 0 }).withMessage('Each size must have a valid stock greater than 0')
+		.optional({ checkFalsy: true }),
+
 ];
 
 export const categoryValidation = (isUpdate = false) => [

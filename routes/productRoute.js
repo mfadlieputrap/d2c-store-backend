@@ -13,7 +13,7 @@ import handleValidator from "../middleware/handleValidator.js";
 import upload from "../middleware/uploadMiddleware.js";
 const router = express.Router();
 
-router.post('/add', authJwt, checkUserExists, allowRoles(['admin']), upload.single('images'), ...productValidation(), handleValidator, addProduct);
+router.post('/add', authJwt, checkUserExists, allowRoles(['admin']), upload.array('images', 10), ...productValidation(), handleValidator, addProduct);
 router.put('/update/:productId', authJwt, checkUserExists, allowRoles(['admin']), upload.none(), ...productValidation(true), handleValidator, updateProduct);
 router.get('/', getProducts);
 router.get('/category/:categoryId', getProductsByCategory);

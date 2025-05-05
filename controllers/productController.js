@@ -6,10 +6,12 @@ export const addProduct = async (req, res) => {
 		const productData = req.body
 		const product = await Product.create({
 			...productData,
-			images: req.file.filename
+			images: req.files.filename
 		});
+		
 		return responseFormat(res, 201, "Product added successfully", product);
 	} catch (e) {
+		console.log('[CREATE PRODUCT ERROR: ', e.message);
 		return responseFormat(res, 500, e.message);
 	}
 }
