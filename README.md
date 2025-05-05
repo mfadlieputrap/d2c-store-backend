@@ -7,6 +7,7 @@
 ![Status](https://img.shields.io/badge/status-under--development-yellow)
 ![License](https://img.shields.io/badge/license-ISC-blue.svg)
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![CI](https://github.com/mfadlieputrap/d2c-store-backend/actions/workflows/ci.yml/badge.svg)
 
 
 This is the backend service for a Direct-to-Consumer (D2C) fashion brand store. Built using **Node.js**, **Express.js**, and **MongoDB**, this project handles user authentication, account management, and is being developed to support orders and payments.
@@ -188,7 +189,18 @@ To run tests locally:
 
 ```bash
 npm run test
+
+#or
+
+npm test
 ```
+---
+
+## 🔄 Continuous Integration
+
+Automated tests run via GitHub Actions on every push and pull request to `main`.  
+This ensures that all changes keep the app stable and tested.
+
 
 ---
 
